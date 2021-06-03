@@ -1,0 +1,42 @@
+{
+	"name": "savory-api",
+	"version": "1.0.0",
+	"main": "src/server.js",
+	"module": "src/server.js",
+	"scripts": {
+		"build": "babel src --out-dir build",
+		"dev": "nodemon --exec babel-node src/server.js",
+		"start": "node build/server.js",
+		"format": "prettier --write \"**/*.{js,mjs}\"",
+		"format:check": "prettier -c \"**/*.{js,mjs}\"",
+		"lint": "eslint \"src/**/*.{js,mjs}\"",
+		"lint:fix": "npm run lint -- --fix"
+	},
+	"keywords": [
+		"savory-api"
+	],
+	"author": "PranavGPR",
+	"license": "ISC",
+	"description": "The API repo for Savory",
+	"dependencies": {
+		"cors": "^2.8.5",
+		"dotenv": "^10.0.0",
+		"express": "^4.17.1",
+		"express-async-errors": "^3.1.1",
+		"express-rate-limit": "^5.2.6",
+		"helmet": "^4.6.0",
+		"http-status-codes": "^2.1.4",
+		"mysql": "^2.18.1",
+		"winston": "^3.3.3"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.14.3",
+		"@babel/node": "^7.14.2",
+		"@babel/preset-env": "^7.14.4",
+		"chalk": "^2.4.2",
+		"eslint": "^7.27.0",
+		"morgan": "^1.10.0",
+		"nodemon": "^2.0.7",
+		"prettier": "^2.3.0"
+	}
+}

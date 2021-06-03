@@ -1,5 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 
+import connection from '../dbConnection';
+import logger from '../tools/logger';
+
 /**
  * Controllers for all /ping routes
  *
@@ -12,7 +15,13 @@ export function basePing(_req, res) {
 	 * @param {}
 	 * @returns Status `200`
 	 */
-	res.sendStatus(StatusCodes.OK);
+
+	connection.query('SELECT * from student', function (error, results, fields) {
+		if (error) throw error;
+		res.status(StatusCodes.OK).json({ message: results });
+	});
+
+	connection.end();
 }
 
 export default { basePing };

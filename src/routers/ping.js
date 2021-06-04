@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { basePing } from '../controllers/ping';
+import { basePing } from 'controllers/ping';
 
 const router = Router();
 

@@ -1,4 +1,4 @@
-import logger from '../tools/logger';
+import logger from 'tools/logger';
 import { StatusCodes } from 'http-status-codes';
 
 export default (err, req, res, next) => {

@@ -3,8 +3,8 @@ import chalk from 'chalk';
 import 'dotenv/config';
 import cors from 'cors';
 
-import logger from './tools/logger';
-import { registerLogging, registerPreprocessor, registerRouters } from './tools';
+import logger from 'tools/logger';
+import { registerLogging, registerPreprocessor, registerRouters } from 'tools';
 
 const { PORT } = process.env;
 

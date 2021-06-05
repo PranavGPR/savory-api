@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 
-import connection from '../dbConnection';
+import connection from 'helpers/dbConnection';
 
 /**
  * Controllers for all /ping routes

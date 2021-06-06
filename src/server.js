@@ -1,4 +1,5 @@
 import express from 'express';
+import 'express-async-errors';
 import chalk from 'chalk';
 import 'dotenv/config';
 import cors from 'cors';

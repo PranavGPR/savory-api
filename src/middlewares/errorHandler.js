@@ -6,11 +6,9 @@ export default (err, req, res, next) => {
 
 	logger.error(err.message ?? err);
 
-	if (err.code === 11000) {
-		const errorKeys = Object.keys(err.keyPattern);
-		return res
-			.status(400)
-			.json({ error: `${body[errorKeys[0]]} is already registered`, detail: err });
+	if (err.errno == 1062) {
+		console.log(body);
+		return res.status(StatusCodes.BAD_REQUEST).json({ error: `${body.id} is already registered` });
 	}
 
 	res.status(err.code ?? StatusCodes.INTERNAL_SERVER_ERROR).json({

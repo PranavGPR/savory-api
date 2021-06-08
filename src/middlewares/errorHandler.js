@@ -7,8 +7,9 @@ export default (err, req, res, next) => {
 	logger.error(err.message ?? err);
 
 	if (err.errno == 1062) {
-		console.log(body);
-		return res.status(StatusCodes.BAD_REQUEST).json({ error: `${body.id} is already registered` });
+		return res
+			.status(StatusCodes.BAD_REQUEST)
+			.json({ error: `${body.email} is already registered` });
 	}
 
 	res.status(err.code ?? StatusCodes.INTERNAL_SERVER_ERROR).json({

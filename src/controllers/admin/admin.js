@@ -93,7 +93,7 @@ export const deleteAdmin = async (req, res) => {
 /**
  * Update an admin
  * @param {id, name, profileImg}
- * @returns 'Admin Deleted' | 'No records found!'
+ * @returns 'Admin Updated' | 'No records found!'
  */
 
 export const updateAdmin = async (req, res) => {

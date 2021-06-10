@@ -11,11 +11,13 @@ export default function validateCustomer(data) {
 			.length(10)
 			.pattern(/^[0-9]+$/)
 			.required(),
-		address: Joi.string(),
-		city: Joi.string().min(5).max(32),
+		address: Joi.string().empty('').default(null),
+		city: Joi.string().min(5).max(32).empty('').default(null),
 		pincode: Joi.string()
 			.length(6)
 			.pattern(/^[0-9]+$/)
+			.empty('')
+			.default(null)
 	});
 
 	return schema.validate(data);

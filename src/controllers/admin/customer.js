@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
-import { validateCustomer } from 'validators';
+import { uuidValidator, validateCustomer } from 'validators';
 
 /**
  * Controllers for all /admin/customer routes
@@ -23,15 +23,15 @@ export const createCustomer = async (req, res) => {
 	const { error } = validateCustomer(body);
 	if (error) return res.status(StatusCodes.BAD_REQUEST).json({ error: error.details[0].message });
 
-	const { name, password, phoneNumber, email } = body;
+	const { name, password, phoneNumber, email, address, city, pincode } = body;
 
-	const result = await query('insert into customer values(?,?,?,?,?)', [
-		id,
-		name,
-		password,
-		email,
-		phoneNumber
-	]);
+	let created_at = new Date(),
+		updated_at = new Date();
+
+	const result = await query(
+		'insert into customer(id,name,phoneNumber,email,password,address,city,pincode) values(?,?,?,?,?,?,?,?)',
+		[id, name, phoneNumber, email, password, address, city, pincode]
+	);
 
 	if (result.affectedRows)
 		return res.status(StatusCodes.OK).json({ message: 'Successfully inserted!' });
@@ -98,10 +98,26 @@ export const deleteCustomer = async (req, res) => {
  */
 
 export const updateCustomer = async (req, res) => {
-	const {
-		body: { id, name, phoneNumber, address, city, pincode }
-	} = req;
+	const { id } = req.params;
+	const { body } = req;
 
 	if (!uuidValidator(id))
 		return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Enter a valid id' });
+
+	let fields = '';
+	Object.keys(body).forEach((val, ind) => {
+		fields += ind + 1 === Object.keys(body).length ? `${val}=?` : `${val}=?,`;
+	});
+
+	let objValues = '';
+	Object.values(body).map((v, i) => {
+		objValues += i + 1 === Object.values(body).length ? `${v}` : `${v},`;
+	});
+
+	const result = await query(`update customer set ${fields} where id=?`, [objValues, id]);
+
+	if (result.affectedRows)
+		return res.status(StatusCodes.OK).json({ message: 'Successfully updated' });
+
+	return res.status(StatusCodes.NOT_FOUND).json({ message: 'No records found!' });
 };

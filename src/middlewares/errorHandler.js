@@ -12,8 +12,12 @@ export default (err, req, res, next) => {
 			.json({ error: `${body.email} is already registered` });
 	}
 
-	res.status(err.code ?? StatusCodes.INTERNAL_SERVER_ERROR).json({
-		message: err.message ?? 'Something went wrong from our side. Please try again after some time.'
+	if (err.errno === 1136) {
+		return res.status(StatusCodes.BAD_REQUEST).json({ error: 'More or less columns provided' });
+	}
+
+	res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+		error: err.message ?? 'Something went wrong from our side. Please try again after some time.'
 	});
 	next(err);
 };

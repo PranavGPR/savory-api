@@ -13,5 +13,7 @@ export const query = async (sql, params) => {
 
 	const [results] = await connection.query(sql, params);
 
+	connection.end();
+
 	return results;
 };

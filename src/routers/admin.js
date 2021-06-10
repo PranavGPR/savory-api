@@ -1,13 +1,30 @@
 import { Router } from 'express';
 
-import { createAdmin, deleteAdmin, getAdminById, getAdmins, updateAdmin } from 'controllers/admin';
+import {
+	createAdmin,
+	createCustomer,
+	deleteAdmin,
+	deleteCustomer,
+	getAdminById,
+	getAdmins,
+	getCustomerById,
+	getCustomers,
+	updateAdmin,
+	updateCustomer
+} from 'controllers/admin';
 
 const router = Router();
 
+router.post('/customer/create', createCustomer);
+router.get('/customer/all', getCustomers);
+router.put('/customer/:id', updateCustomer);
+router.delete('/customer/:id', deleteCustomer);
+router.get('/customer/:id', getCustomerById);
+
 router.post('/create', createAdmin);
-router.put('/update', updateAdmin);
-router.delete('/delete/:id', deleteAdmin);
 router.get('/all', getAdmins);
+router.put('/:id', updateAdmin);
+router.delete('/:id', deleteAdmin);
 router.get('/:id', getAdminById);
 
 export default router;

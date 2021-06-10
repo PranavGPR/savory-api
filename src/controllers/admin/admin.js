@@ -7,7 +7,7 @@ import { uuidValidator, validateAdmin } from 'validators';
 /**
  * Controllers for all /admin routes
  *
- * Available controllers: createAdmin, getAdmins, getAdminByID, deleteAdmin
+ * Available controllers: createAdmin, getAdmins, getAdminByID, deleteAdmin, updateAdmin
  */
 
 /**

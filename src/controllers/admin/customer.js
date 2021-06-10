@@ -25,9 +25,6 @@ export const createCustomer = async (req, res) => {
 
 	const { name, password, phoneNumber, email, address, city, pincode } = body;
 
-	let created_at = new Date(),
-		updated_at = new Date();
-
 	const result = await query(
 		'insert into customer(id,name,phoneNumber,email,password,address,city,pincode) values(?,?,?,?,?,?,?,?)',
 		[id, name, phoneNumber, email, password, address, city, pincode]
@@ -109,12 +106,10 @@ export const updateCustomer = async (req, res) => {
 		fields += ind + 1 === Object.keys(body).length ? `${val}=?` : `${val}=?,`;
 	});
 
-	let objValues = '';
-	Object.values(body).map((v, i) => {
-		objValues += i + 1 === Object.values(body).length ? `${v}` : `${v},`;
-	});
+	let objValues = Object.values(body);
+	objValues.push(id);
 
-	const result = await query(`update customer set ${fields} where id=?`, [objValues, id]);
+	const result = await query(`update customer set ${fields} where id=?`, objValues);
 
 	if (result.affectedRows)
 		return res.status(StatusCodes.OK).json({ message: 'Successfully updated' });

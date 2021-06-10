@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
 import { uuidValidator, validateAdmin } from 'validators';
+import logger from 'tools/logger';
 
 /**
  * Controllers for all /admin routes
@@ -24,13 +25,10 @@ export const createAdmin = async (req, res) => {
 
 	const { name, password, profileImg, email } = body;
 
-	const result = await query('insert into admin values(?,?,?,?,?)', [
-		id,
-		name,
-		password,
-		email,
-		profileImg
-	]);
+	const result = await query(
+		'insert into admin(id,name,password,email,profileImg) values(?,?,?,?,?)',
+		[id, name, password, email, profileImg]
+	);
 
 	if (result.affectedRows)
 		return res.status(StatusCodes.OK).json({ message: 'Successfully inserted!' });
@@ -97,33 +95,29 @@ export const deleteAdmin = async (req, res) => {
  */
 
 export const updateAdmin = async (req, res) => {
-	const {
-		body: { id, name, profileImg }
-	} = req;
+	const { id } = req.params;
+	const { body } = req;
 
 	if (!uuidValidator(id))
 		return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Enter a valid id' });
 
-	if (!name) {
-		const result = await query('update admin set profileImg=? where id=?', [profileImg, id]);
+	let fields = '';
+	Object.keys(body).forEach((val, ind) => {
+		fields += ind + 1 === Object.keys(body).length ? `${val}=?` : `${val}=?,`;
+	});
 
-		if (result.affectedRows)
-			return res.status(StatusCodes.OK).json({ message: 'Successfully updated profile image!' });
-	} else if (!profileImg) {
-		const result = await query('update admin set name=? where id=?', [name, id]);
+	let objValues = '';
+	Object.values(body).map((val, ind) => {
+		objValues += ind + 1 === Object.values(body).length ? `${val}` : `${val},`;
+	});
 
-		if (result.affectedRows)
-			return res.status(StatusCodes.OK).json({ message: 'Successfully updated name!' });
-	} else {
-		const result = await query('update admin set name=?, profileImg=? where id=?', [
-			name,
-			profileImg,
-			id
-		]);
+	logger.info(fields);
+	logger.info(objValues);
 
-		if (result.affectedRows)
-			return res.status(StatusCodes.OK).json({ message: 'Successfully updated!' });
-	}
+	const result = await query(`update admin set name=?,profileImg=? where id=?`, [objValues, id]);
+
+	if (result.affectedRows)
+		return res.status(StatusCodes.OK).json({ message: 'Successfully updated!' });
 
 	return res.status(StatusCodes.NOT_FOUND).json({ message: 'No records found!' });
 };

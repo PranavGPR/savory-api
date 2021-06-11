@@ -22,3 +22,5 @@ server.once('listening', () => {
 	const { port } = server.address();
 	logger.info(`Server started at port ${chalk.blueBright(port)}`);
 });
+
+module.exports = server;

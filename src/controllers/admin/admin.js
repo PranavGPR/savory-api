@@ -2,8 +2,6 @@ import { StatusCodes } from 'http-status-codes';
 import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
-import { validateAdmin } from 'validators';
-import logger from 'tools/logger';
 import { sendFailure, sendSuccess } from 'helpers';
 
 /**
@@ -20,9 +18,6 @@ import { sendFailure, sendSuccess } from 'helpers';
 export const createAdmin = async (req, res) => {
 	const { body } = req;
 	const id = uuidv4();
-
-	const { error } = validateAdmin(body);
-	if (error) return sendFailure(res, { error: error.details[0].message });
 
 	const { name, password, profileImg, email } = body;
 
@@ -99,9 +94,6 @@ export const updateAdmin = async (req, res) => {
 	Object.values(body).map((val, ind) => {
 		objValues += ind + 1 === Object.values(body).length ? `${val}` : `${val},`;
 	});
-
-	logger.info(fields);
-	logger.info(objValues);
 
 	const result = await query(`update admin set name=?,profileImg=? where id=?`, [objValues, id]);
 

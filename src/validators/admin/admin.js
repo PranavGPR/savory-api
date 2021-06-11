@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-export default function validateAdmin(data) {
+export const createAdminValidator = data => {
 	const schema = Joi.object({
 		name: Joi.string().required(),
 		password: Joi.string().min(8).max(256).required(),
@@ -11,4 +11,4 @@ export default function validateAdmin(data) {
 	});
 
 	return schema.validate(data);
-}
+};

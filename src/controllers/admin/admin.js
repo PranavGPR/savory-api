@@ -2,8 +2,9 @@ import { StatusCodes } from 'http-status-codes';
 import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
-import { uuidValidator, validateAdmin } from 'validators';
+import { validateAdmin } from 'validators';
 import logger from 'tools/logger';
+import { sendFailure, sendSuccess } from 'helpers';
 
 /**
  * Controllers for all /admin routes
@@ -21,7 +22,7 @@ export const createAdmin = async (req, res) => {
 	const id = uuidv4();
 
 	const { error } = validateAdmin(body);
-	if (error) return res.status(StatusCodes.BAD_REQUEST).json({ error: error.details[0].message });
+	if (error) return sendFailure(res, { error: error.details[0].message });
 
 	const { name, password, profileImg, email } = body;
 
@@ -30,10 +31,9 @@ export const createAdmin = async (req, res) => {
 		[id, name, password, email, profileImg]
 	);
 
-	if (result.affectedRows)
-		return res.status(StatusCodes.OK).json({ message: 'Successfully inserted!' });
+	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully inserted!' });
 
-	return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Error in inserting the values' });
+	return sendFailure(res, { error: 'Error in inserting the values' }, StatusCodes.BAD_REQUEST);
 };
 
 /**
@@ -44,9 +44,9 @@ export const createAdmin = async (req, res) => {
 export const getAdmins = async (req, res) => {
 	const result = await query('select * from admin');
 
-	if (!result) return res.status(StatusCodes.NOT_FOUND).json({ message: 'No records found!' });
+	if (!result) return sendFailure(res, { message: 'No records found!' });
 
-	return res.status(StatusCodes.OK).json({ result: result });
+	return sendSuccess(res, { result });
 };
 
 /**
@@ -57,15 +57,11 @@ export const getAdmins = async (req, res) => {
 export const getAdminById = async (req, res) => {
 	const { id } = req.params;
 
-	if (!uuidValidator(id)) {
-		return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Enter a valid id' });
-	}
-
 	const result = await query('select * from admin where id=?', [id]);
 
-	if (!result) return res.status(StatusCodes.NOT_FOUND).json({ message: 'No records found!' });
+	if (!result) return sendFailure(res, { message: 'No records found!' });
 
-	return res.status(StatusCodes.OK).json({ result: result[0] });
+	return sendSuccess(res, { result: result[0] });
 };
 
 /**
@@ -77,15 +73,11 @@ export const getAdminById = async (req, res) => {
 export const deleteAdmin = async (req, res) => {
 	const { id } = req.params;
 
-	if (!uuidValidator(id))
-		return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Enter a valid id' });
-
 	const result = await query('delete from admin where id=?', [id]);
 
-	if (result.affectedRows)
-		return res.status(StatusCodes.OK).json({ message: 'Successfully deleted!' });
+	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully deleted!' });
 
-	return res.status(StatusCodes.NOT_FOUND).json({ message: 'No records found!' });
+	return sendFailure(res, { message: 'No records found!' });
 };
 
 /**
@@ -97,9 +89,6 @@ export const deleteAdmin = async (req, res) => {
 export const updateAdmin = async (req, res) => {
 	const { id } = req.params;
 	const { body } = req;
-
-	if (!uuidValidator(id))
-		return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Enter a valid id' });
 
 	let fields = '';
 	Object.keys(body).forEach((val, ind) => {
@@ -116,8 +105,7 @@ export const updateAdmin = async (req, res) => {
 
 	const result = await query(`update admin set name=?,profileImg=? where id=?`, [objValues, id]);
 
-	if (result.affectedRows)
-		return res.status(StatusCodes.OK).json({ message: 'Successfully updated!' });
+	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated!' });
 
-	return res.status(StatusCodes.NOT_FOUND).json({ message: 'No records found!' });
+	return sendFailure(res, { message: 'No records found!' });
 };

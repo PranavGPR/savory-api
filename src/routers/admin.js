@@ -12,19 +12,20 @@ import {
 	updateAdmin,
 	updateCustomer
 } from 'controllers/admin';
+import { uuidValidator } from 'middlewares';
 
 const router = Router();
 
-router.post('/customer/create', createCustomer);
-router.get('/customer/all', getCustomers);
-router.put('/customer/:id', updateCustomer);
-router.delete('/customer/:id', deleteCustomer);
-router.get('/customer/:id', getCustomerById);
-
 router.post('/create', createAdmin);
 router.get('/all', getAdmins);
-router.put('/:id', updateAdmin);
-router.delete('/:id', deleteAdmin);
-router.get('/:id', getAdminById);
+router.put('/:id', uuidValidator, updateAdmin);
+router.delete('/:id', uuidValidator, deleteAdmin);
+router.get('/:id', uuidValidator, getAdminById);
+
+router.post('/customer/create', createCustomer);
+router.get('/customer/all', getCustomers);
+router.put('/customer/:id', uuidValidator, updateCustomer);
+router.delete('/customer/:id', uuidValidator, deleteCustomer);
+router.get('/customer/:id', uuidValidator, getCustomerById);
 
 export default router;

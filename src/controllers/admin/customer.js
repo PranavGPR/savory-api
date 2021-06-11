@@ -2,7 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
-import { uuidValidator, validateCustomer } from 'validators';
+import { validateCustomer } from 'validators';
+import { sendFailure, sendSuccess } from 'helpers';
 
 /**
  * Controllers for all /admin/customer routes
@@ -21,7 +22,7 @@ export const createCustomer = async (req, res) => {
 	const id = uuidv4();
 
 	const { error } = validateCustomer(body);
-	if (error) return res.status(StatusCodes.BAD_REQUEST).json({ error: error.details[0].message });
+	if (error) return sendFailure(res, { error: error.details[0].message });
 
 	const { name, password, phoneNumber, email, address, city, pincode } = body;
 
@@ -30,10 +31,9 @@ export const createCustomer = async (req, res) => {
 		[id, name, phoneNumber, email, password, address, city, pincode]
 	);
 
-	if (result.affectedRows)
-		return res.status(StatusCodes.OK).json({ message: 'Successfully inserted!' });
+	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully inserted!' });
 
-	return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Error in inserting the values' });
+	return sendFailure(res, { error: 'Error in inserting the values' }, StatusCodes.BAD_REQUEST);
 };
 
 /**
@@ -44,9 +44,9 @@ export const createCustomer = async (req, res) => {
 export const getCustomers = async (req, res) => {
 	const result = await query('select * from customer');
 
-	if (!result) return res.status(StatusCodes.NOT_FOUND).json({ message: 'No records found!' });
+	if (!result) return sendFailure(res, { message: 'No records found!' });
 
-	return res.status(StatusCodes.OK).json({ result: result });
+	return sendSuccess(res, { result });
 };
 
 /**
@@ -57,15 +57,11 @@ export const getCustomers = async (req, res) => {
 export const getCustomerById = async (req, res) => {
 	const { id } = req.params;
 
-	if (!uuidValidator(id)) {
-		return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Enter a valid id' });
-	}
-
 	const result = await query('select * from customer where id=?', [id]);
 
-	if (!result) return res.status(StatusCodes.NOT_FOUND).json({ message: 'No records found!' });
+	if (!result) return sendFailure(res, { message: 'No records found!' });
 
-	return res.status(StatusCodes.OK).json({ result: result[0] });
+	return sendSuccess(res, { result: result[0] });
 };
 
 /**
@@ -77,15 +73,11 @@ export const getCustomerById = async (req, res) => {
 export const deleteCustomer = async (req, res) => {
 	const { id } = req.params;
 
-	if (!uuidValidator(id))
-		return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Enter a valid id' });
-
 	const result = await query('delete from customer where id=?', [id]);
 
-	if (result.affectedRows)
-		return res.status(StatusCodes.OK).json({ message: 'Successfully deleted!' });
+	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully deleted!' });
 
-	return res.status(StatusCodes.NOT_FOUND).json({ message: 'No records found!' });
+	return sendFailure(res, { message: 'No records found!' });
 };
 
 /**
@@ -98,9 +90,6 @@ export const updateCustomer = async (req, res) => {
 	const { id } = req.params;
 	const { body } = req;
 
-	if (!uuidValidator(id))
-		return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Enter a valid id' });
-
 	let fields = '';
 	Object.keys(body).forEach((val, ind) => {
 		fields += ind + 1 === Object.keys(body).length ? `${val}=?` : `${val}=?,`;
@@ -111,8 +100,7 @@ export const updateCustomer = async (req, res) => {
 
 	const result = await query(`update customer set ${fields} where id=?`, objValues);
 
-	if (result.affectedRows)
-		return res.status(StatusCodes.OK).json({ message: 'Successfully updated' });
+	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated' });
 
-	return res.status(StatusCodes.NOT_FOUND).json({ message: 'No records found!' });
+	return sendFailure(res, { message: 'No records found!' });
 };

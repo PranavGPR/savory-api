@@ -2,7 +2,6 @@ import { StatusCodes } from 'http-status-codes';
 import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
-import { validateCustomer } from 'validators';
 import { sendFailure, sendSuccess } from 'helpers';
 
 /**
@@ -20,9 +19,6 @@ import { sendFailure, sendSuccess } from 'helpers';
 export const createCustomer = async (req, res) => {
 	const { body } = req;
 	const id = uuidv4();
-
-	const { error } = validateCustomer(body);
-	if (error) return sendFailure(res, { error: error.details[0].message });
 
 	const { name, password, phoneNumber, email, address, city, pincode } = body;
 

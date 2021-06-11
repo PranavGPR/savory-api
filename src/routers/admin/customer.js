@@ -9,11 +9,11 @@ import {
 } from 'controllers/admin';
 import { uuidValidator } from 'middlewares';
 import { validateBody } from 'helpers';
-import { createAdminValidator } from 'validators/admin';
+import { createCustomerValidator } from 'validators/admin';
 
 const router = Router();
 
-router.post('/create', createCustomer);
+router.post('/create', validateBody(createCustomerValidator), createCustomer);
 router.get('/all', getCustomers);
 router.put('/:id', uuidValidator, updateCustomer);
 router.delete('/:id', uuidValidator, deleteCustomer);

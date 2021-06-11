@@ -1,3 +1,5 @@
+import { StatusCodes } from 'http-status-codes';
+
 export default function uuidValidator(req, res, next) {
 	const { id } = req.params;
 

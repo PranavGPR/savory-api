@@ -44,7 +44,7 @@ export const createAdmin = async (req, res) => {
 export const getAdmins = async (req, res) => {
 	const result = await query('select * from admin');
 
-	if (!result) return sendFailure(res, { message: 'No records found!' });
+	if (!result.length) return sendFailure(res, { message: 'No records found!' });
 
 	return sendSuccess(res, { result });
 };
@@ -59,7 +59,7 @@ export const getAdminById = async (req, res) => {
 
 	const result = await query('select * from admin where id=?', [id]);
 
-	if (!result) return sendFailure(res, { message: 'No records found!' });
+	if (!result.length) return sendFailure(res, { message: 'No records found!' });
 
 	return sendSuccess(res, { result: result[0] });
 };

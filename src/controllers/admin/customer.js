@@ -44,7 +44,7 @@ export const createCustomer = async (req, res) => {
 export const getCustomers = async (req, res) => {
 	const result = await query('select * from customer');
 
-	if (!result) return sendFailure(res, { message: 'No records found!' });
+	if (!result.length) return sendFailure(res, { message: 'No records found!' });
 
 	return sendSuccess(res, { result });
 };
@@ -59,7 +59,7 @@ export const getCustomerById = async (req, res) => {
 
 	const result = await query('select * from customer where id=?', [id]);
 
-	if (!result) return sendFailure(res, { message: 'No records found!' });
+	if (!result.length) return sendFailure(res, { message: 'No records found!' });
 
 	return sendSuccess(res, { result: result[0] });
 };

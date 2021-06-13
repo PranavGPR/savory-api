@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
 import { sendFailure, sendSuccess } from 'helpers';
+import logger from 'tools/logger';
 
 /**
  * Controllers for all /admin routes
@@ -39,7 +40,7 @@ export const createAdmin = async (req, res) => {
 export const getAdmins = async (req, res) => {
 	const result = await query('select * from admin');
 
-	if (!result.length) return sendFailure(res, { message: 'No records found!' });
+	if (!result.length) return sendFailure(res, { error: 'No records found!' });
 
 	return sendSuccess(res, { result });
 };
@@ -54,7 +55,7 @@ export const getAdminById = async (req, res) => {
 
 	const result = await query('select * from admin where id=?', [id]);
 
-	if (!result.length) return sendFailure(res, { message: 'No records found!' });
+	if (!result.length) return sendFailure(res, { error: 'No records found!' });
 
 	return sendSuccess(res, { result: result[0] });
 };
@@ -72,7 +73,7 @@ export const deleteAdmin = async (req, res) => {
 
 	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully deleted!' });
 
-	return sendFailure(res, { message: 'No records found!' });
+	return sendFailure(res, { error: 'No records found!' });
 };
 
 /**
@@ -90,14 +91,12 @@ export const updateAdmin = async (req, res) => {
 		fields += ind + 1 === Object.keys(body).length ? `${val}=?` : `${val}=?,`;
 	});
 
-	let objValues = '';
-	Object.values(body).map((val, ind) => {
-		objValues += ind + 1 === Object.values(body).length ? `${val}` : `${val},`;
-	});
+	let objValues = Object.values(body);
+	objValues.push(id);
 
-	const result = await query(`update admin set name=?,profileImg=? where id=?`, [objValues, id]);
+	const result = await query(`update admin set ${fields} where id=?`, objValues);
 
 	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated!' });
 
-	return sendFailure(res, { message: 'No records found!' });
+	return sendFailure(res, { error: 'No records found!' });
 };

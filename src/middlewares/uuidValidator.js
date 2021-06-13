@@ -1,3 +1,4 @@
+import { sendFailure } from 'helpers';
 import { StatusCodes } from 'http-status-codes';
 
 export default function uuidValidator(req, res, next) {
@@ -7,7 +8,7 @@ export default function uuidValidator(req, res, next) {
 	const result = uuidPattern.test(id);
 
 	if (!result) {
-		return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Enter a valid id' });
+		return sendFailure(res, { error: 'Enter a valid id' }, StatusCodes.BAD_REQUEST);
 	}
 
 	next();

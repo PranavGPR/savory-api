@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
 import { sendFailure, sendSuccess } from 'helpers';
-import logger from 'tools/logger';
 
 /**
  * Controllers for all /admin routes
@@ -13,21 +12,24 @@ import logger from 'tools/logger';
 
 /**
  * Create an admin
- * @param { name, password, profileImg, email }
+ * @param { name, password, email }
  * @returns 'Successfully Inserted' | 'Error in inserting the values'
  */
 export const createAdmin = async (req, res) => {
-	const { body } = req;
+	const {
+		body: { name, password, email }
+	} = req;
+
 	const id = uuidv4();
 
-	const { name, password, profileImg, email } = body;
+	const result = await query('insert into admin(id,name,password,email) values(?,?,?,?)', [
+		id,
+		name,
+		password,
+		email
+	]);
 
-	const result = await query(
-		'insert into admin(id,name,password,email,profileImg) values(?,?,?,?,?)',
-		[id, name, password, email, profileImg]
-	);
-
-	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully inserted!' });
+	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully inserted' });
 
 	return sendFailure(res, { error: 'Error in inserting the values' }, StatusCodes.BAD_REQUEST);
 };
@@ -35,12 +37,12 @@ export const createAdmin = async (req, res) => {
 /**
  * Get all admins
  * @param {}
- * @returns [admins] | 'No records found!'
+ * @returns [admins] | 'No records found'
  */
 export const getAdmins = async (req, res) => {
 	const result = await query('select * from admin');
 
-	if (!result.length) return sendFailure(res, { error: 'No records found!' });
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
 
 	return sendSuccess(res, { result });
 };
@@ -48,14 +50,14 @@ export const getAdmins = async (req, res) => {
 /**
  * Get an admin by ID
  * @param {id}
- * @returns {admin} | 'No records found!'
+ * @returns {admin} | 'No records found'
  */
 export const getAdminById = async (req, res) => {
 	const { id } = req.params;
 
 	const result = await query('select * from admin where id=?', [id]);
 
-	if (!result.length) return sendFailure(res, { error: 'No records found!' });
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
 
 	return sendSuccess(res, { result: result[0] });
 };
@@ -63,7 +65,7 @@ export const getAdminById = async (req, res) => {
 /**
  * Delete an admin
  * @param {id}
- * @returns 'Admin Deleted' | 'No records found!'
+ * @returns 'Admin Deleted' | 'No records found'
  */
 
 export const deleteAdmin = async (req, res) => {
@@ -71,15 +73,15 @@ export const deleteAdmin = async (req, res) => {
 
 	const result = await query('delete from admin where id=?', [id]);
 
-	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully deleted!' });
+	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully deleted' });
 
-	return sendFailure(res, { error: 'No records found!' });
+	return sendFailure(res, { error: 'No records found' });
 };
 
 /**
  * Update an admin
- * @param {id, name, profileImg}
- * @returns 'Admin Updated' | 'No records found!'
+ * @param {id, name, password, email}
+ * @returns 'Admin Updated' | 'No records found'
  */
 
 export const updateAdmin = async (req, res) => {
@@ -96,7 +98,7 @@ export const updateAdmin = async (req, res) => {
 
 	const result = await query(`update admin set ${fields} where id=?`, objValues);
 
-	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated!' });
+	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated' });
 
-	return sendFailure(res, { error: 'No records found!' });
+	return sendFailure(res, { error: 'No records found' });
 };

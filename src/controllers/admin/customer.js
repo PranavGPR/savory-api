@@ -27,7 +27,7 @@ export const createCustomer = async (req, res) => {
 		[id, name, phoneNumber, email, password, address, city, pincode]
 	);
 
-	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully inserted!' });
+	if (result.affectedRows) return sendSuccess(res, { error: 'Successfully inserted' });
 
 	return sendFailure(res, { error: 'Error in inserting the values' }, StatusCodes.BAD_REQUEST);
 };
@@ -35,12 +35,12 @@ export const createCustomer = async (req, res) => {
 /**
  * Get all customers
  * @param {}
- * @returns [customers] | 'No records found!'
+ * @returns [customers] | 'No records found'
  */
 export const getCustomers = async (req, res) => {
 	const result = await query('select * from customer');
 
-	if (!result.length) return sendFailure(res, { message: 'No records found!' });
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
 
 	return sendSuccess(res, { result });
 };
@@ -48,14 +48,14 @@ export const getCustomers = async (req, res) => {
 /**
  * Get a customer by ID
  * @param {id}
- * @returns [customer] | 'No records found!'
+ * @returns [customer] | 'No records found'
  */
 export const getCustomerById = async (req, res) => {
 	const { id } = req.params;
 
 	const result = await query('select * from customer where id=?', [id]);
 
-	if (!result.length) return sendFailure(res, { message: 'No records found!' });
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
 
 	return sendSuccess(res, { result: result[0] });
 };
@@ -63,7 +63,7 @@ export const getCustomerById = async (req, res) => {
 /**
  * Delete a customer
  * @param {id}
- * @returns 'Customer Deleted' | 'No records found!'
+ * @returns 'Customer Deleted' | 'No records found'
  */
 
 export const deleteCustomer = async (req, res) => {
@@ -71,15 +71,15 @@ export const deleteCustomer = async (req, res) => {
 
 	const result = await query('delete from customer where id=?', [id]);
 
-	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully deleted!' });
+	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully deleted' });
 
-	return sendFailure(res, { message: 'No records found!' });
+	return sendFailure(res, { error: 'No records found' });
 };
 
 /**
  * Update a customer
- * @param {id, name, phoneNumber, address, city, pincode}
- * @returns 'Customer Updated' | 'No records found!'
+ * @param {id, name, phoneNumber, address, city, pincode, email, password}
+ * @returns 'Customer Updated' | 'No records found'
  */
 
 export const updateCustomer = async (req, res) => {
@@ -98,5 +98,5 @@ export const updateCustomer = async (req, res) => {
 
 	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated' });
 
-	return sendFailure(res, { message: 'No records found!' });
+	return sendFailure(res, { error: 'No records found' });
 };

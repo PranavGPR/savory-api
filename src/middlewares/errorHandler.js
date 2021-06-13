@@ -7,9 +7,7 @@ export default (err, req, res, next) => {
 	logger.error(err.message ?? err);
 
 	if (err.errno == 1062) {
-		return res
-			.status(StatusCodes.BAD_REQUEST)
-			.json({ error: `${body.email} is already registered` });
+		return res.status(StatusCodes.BAD_REQUEST).json({ error: err.message });
 	}
 
 	if (err.errno === 1136) {

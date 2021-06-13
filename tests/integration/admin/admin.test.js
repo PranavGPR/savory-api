@@ -7,6 +7,7 @@ import { query } from 'helpers/dbConnection';
 
 let server;
 let id;
+let payload;
 
 describe('/admin/', () => {
 	beforeEach(() => {
@@ -34,12 +35,11 @@ describe('/admin/', () => {
 		it('should get all admins', async () => {
 			id = uuidv4();
 
-			await query('insert into admin(id,name,password,email,profileImg) values(?,?,?,?,?)', [
+			await query('insert into admin(id,name,password,email) values(?,?,?,?)', [
 				id,
 				'Pranav',
 				'Pranav@23',
-				'pranav@email.com',
-				'image'
+				'pranav@email.com'
 			]);
 
 			const res = await exec();
@@ -49,8 +49,6 @@ describe('/admin/', () => {
 	});
 
 	describe('GET /:id', () => {
-		let id;
-
 		beforeEach(() => {
 			id = 'test';
 		});
@@ -78,12 +76,11 @@ describe('/admin/', () => {
 
 		it('should return 200 if admin exists', async () => {
 			id = uuidv4();
-			await query('insert into admin(id,name,password,email,profileImg) values(?,?,?,?,?)', [
+			await query('insert into admin(id,name,password,email) values(?,?,?,?)', [
 				id,
 				'Pranav',
 				'Pranav@23',
-				'pranav@email.com',
-				'image'
+				'pranav@email.com'
 			]);
 
 			const res = await exec();
@@ -93,19 +90,17 @@ describe('/admin/', () => {
 	});
 
 	describe('PUT /:id', () => {
-		let id = uuidv4();
-		let payload = {
-			name: 'GPR',
-			profileImg: 'img'
+		id = uuidv4();
+		payload = {
+			name: 'GPR'
 		};
 
 		beforeEach(async () => {
-			await query('insert into admin(id,name,password,email,profileImg) values(?,?,?,?,?)', [
+			await query('insert into admin(id,name,password,email) values(?,?,?,?)', [
 				id,
 				'Pranav',
 				'Pranav@23',
-				'pranav@email.com',
-				'image'
+				'pranav@email.com'
 			]);
 		});
 
@@ -132,42 +127,26 @@ describe('/admin/', () => {
 			const res = await exec();
 
 			expect(res.status).toBe(404);
-			expect(res.body).toHaveProperty('error', 'No records found!');
+			expect(res.body).toHaveProperty('error', 'No records found');
 		});
 
-		it('should return 200 if one field is updated', async () => {
-			delete payload.profileImg;
-
+		it('should return 200 if admin is updated', async () => {
 			const res = await exec();
 
 			expect(res.status).toBe(200);
-			expect(res.body).toHaveProperty('message', 'Successfully updated!');
-		});
-
-		it('should return 200 if both the fields are updated', async () => {
-			(payload.name = 'GPR'), (payload.profileImg = 'img');
-
-			const res = await exec();
-
-			expect(res.status).toBe(200);
-			expect(res.body).toHaveProperty('message', 'Successfully updated!');
+			expect(res.body).toHaveProperty('message', 'Successfully updated');
 		});
 	});
 
 	describe('DELETE /:id', () => {
-		let id = uuidv4();
-		let payload = {
-			name: 'GPR',
-			profileImg: 'img'
-		};
+		id = uuidv4();
 
 		beforeEach(async () => {
-			await query('insert into admin(id,name,password,email,profileImg) values(?,?,?,?,?)', [
+			await query('insert into admin(id,name,password,email) values(?,?,?,?)', [
 				id,
 				'Pranav',
 				'Pranav@23',
-				'pranav@email.com',
-				'image'
+				'pranav@email.com'
 			]);
 		});
 
@@ -176,7 +155,7 @@ describe('/admin/', () => {
 		});
 
 		const exec = () => {
-			return request(server).delete(`/admin/${id}`).send(payload);
+			return request(server).delete(`/admin/${id}`);
 		};
 
 		it('should return 400 if id is not valid', async () => {
@@ -194,24 +173,21 @@ describe('/admin/', () => {
 			const res = await exec();
 
 			expect(res.status).toBe(404);
-			expect(res.body).toHaveProperty('error', 'No records found!');
+			expect(res.body).toHaveProperty('error', 'No records found');
 		});
 
 		it('should return 200 if admin is deleted', async () => {
-			(payload.name = 'GPR'), (payload.profileImg = 'img');
-
 			const res = await exec();
 
 			expect(res.status).toBe(200);
-			expect(res.body).toHaveProperty('message', 'Successfully deleted!');
+			expect(res.body).toHaveProperty('message', 'Successfully deleted');
 		});
 	});
 
 	describe('POST /create', () => {
-		let payload = {
+		payload = {
 			name: 'Pranav',
-			password: 'Pranav@23',
-			email: 'pranav123@email.com'
+			password: 'Pranav@23'
 		};
 
 		afterEach(async () => {
@@ -229,7 +205,7 @@ describe('/admin/', () => {
 		});
 
 		it('should return 200 if admin is added', async () => {
-			payload.profileImg = 'image';
+			payload.email = 'pranav@email.com';
 			const res = await exec();
 
 			expect(res.status).toBe(200);

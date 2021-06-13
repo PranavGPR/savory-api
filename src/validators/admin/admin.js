@@ -6,8 +6,7 @@ export const createAdminValidator = data => {
 		password: Joi.string().min(8).max(256).required(),
 		email: Joi.string()
 			.email({ tlds: { allow: false } })
-			.required(),
-		profileImg: Joi.string().required()
+			.required()
 	});
 
 	return schema.validate(data);

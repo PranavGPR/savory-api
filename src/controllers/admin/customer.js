@@ -7,7 +7,7 @@ import { sendFailure, sendSuccess } from 'helpers';
 /**
  * Controllers for all /admin/customer routes
  *
- * Available controllers: createCustomer, getAllCustomer, getCustomer, deleteCustomer
+ * Available controllers: createCustomer, getAllCustomer, getCustomer, deleteCustomer, updateCustomer
  */
 
 /**

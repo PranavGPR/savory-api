@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
 import { sendFailure, sendSuccess } from 'helpers';
+import logger from 'tools/logger';
 
 /**
  * Controllers for all /admin/restaurant routes
@@ -112,6 +113,9 @@ export const deleteRestaurant = async (req, res) => {
 export const updateRestaurant = async (req, res) => {
 	const { id } = req.params;
 	const { body } = req;
+
+	logger.info(id);
+	logger.info(body);
 
 	let fields = '';
 	Object.keys(body).forEach((val, ind) => {

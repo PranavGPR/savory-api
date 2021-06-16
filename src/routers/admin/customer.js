@@ -15,7 +15,7 @@ const router = Router();
 
 router.post('/create', validateBody(createCustomerValidator), createCustomer);
 router.get('/all', getCustomers);
-router.put('/:id', uuidValidator, updateCustomerValidator, updateCustomer);
+router.put('/:id', uuidValidator, validateBody(updateCustomerValidator), updateCustomer);
 router.delete('/:id', uuidValidator, deleteCustomer);
 router.get('/:id', uuidValidator, getCustomerById);
 

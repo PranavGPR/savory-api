@@ -20,10 +20,10 @@ export const createRestaurantValidator = data => {
 			.required(),
 		cuisines: Joi.string().required(),
 		opening_time: Joi.string()
-			.pattern(/(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)/gm)
+			.pattern(/(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)/)
 			.required(),
 		closing_time: Joi.string()
-			.pattern(/(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)/gm)
+			.pattern(/(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)/)
 			.required(),
 		popular_dishes: Joi.string().required(),
 		people_say: Joi.string().required(),
@@ -43,8 +43,8 @@ export const updateRestaurantValidator = data => {
 			.length(6)
 			.pattern(/^[0-9]+$/),
 		cuisines: Joi.string(),
-		opening_time: Joi.string().pattern(/(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)/gm),
-		closing_time: Joi.string().pattern(/(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)/gm),
+		opening_time: Joi.string().pattern(/(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)/),
+		closing_time: Joi.string().pattern(/(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)/),
 		popular_dishes: Joi.string(),
 		people_say: Joi.string(),
 		more_info: Joi.string()

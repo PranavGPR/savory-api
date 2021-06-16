@@ -9,7 +9,7 @@ const router = Router();
 
 router.post('/create', validateBody(createAdminValidator), createAdmin);
 router.get('/all', getAdmins);
-router.put('/:id', uuidValidator, updateAdminValidator, updateAdmin);
+router.put('/:id', uuidValidator, validateBody(updateAdminValidator), updateAdmin);
 router.delete('/:id', uuidValidator, deleteAdmin);
 router.get('/:id', uuidValidator, getAdminById);
 

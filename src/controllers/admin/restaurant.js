@@ -114,9 +114,6 @@ export const updateRestaurant = async (req, res) => {
 	const { id } = req.params;
 	const { body } = req;
 
-	logger.info(id);
-	logger.info(body);
-
 	let fields = '';
 	Object.keys(body).forEach((val, ind) => {
 		fields += ind + 1 === Object.keys(body).length ? `${val}=?` : `${val}=?,`;

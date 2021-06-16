@@ -71,3 +71,59 @@ export const getRestaurants = async (req, res) => {
 
 	return sendSuccess(res, { result });
 };
+
+/**
+ * Get a restaurant by ID
+ * @param {id}
+ * @returns {restaurant} | 'No records found'
+ */
+export const getRestaurantById = async (req, res) => {
+	const { id } = req.params;
+
+	const result = await query('select * from restaurant where id=?', [id]);
+
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
+
+	return sendSuccess(res, { result: result[0] });
+};
+
+/**
+ * Delete an restaurant
+ * @param {id}
+ * @returns 'Restaurant Deleted' | 'No records found'
+ */
+
+export const deleteRestaurant = async (req, res) => {
+	const { id } = req.params;
+
+	const result = await query('delete from restaurant where id=?', [id]);
+
+	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully deleted' });
+
+	return sendFailure(res, { error: 'No records found' });
+};
+
+/**
+ * Update a restaurant
+ * @param {id, name, phoneNumber, address, city, pincode, cuisines, opening_time, closing_time, popular_dishes, people_say, more_info}
+ * @returns 'Restaurant Updated' | 'No records found'
+ */
+
+export const updateRestaurant = async (req, res) => {
+	const { id } = req.params;
+	const { body } = req;
+
+	let fields = '';
+	Object.keys(body).forEach((val, ind) => {
+		fields += ind + 1 === Object.keys(body).length ? `${val}=?` : `${val}=?,`;
+	});
+
+	let objValues = Object.values(body);
+	objValues.push(id);
+
+	const result = await query(`update restaurant set ${fields} where id=?`, objValues);
+
+	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated' });
+
+	return sendFailure(res, { error: 'No records found' });
+};

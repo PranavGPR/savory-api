@@ -22,3 +22,19 @@ export const createCustomerValidator = data => {
 
 	return schema.validate(data);
 };
+
+export const updateCustomerValidator = data => {
+	const schema = Joi.object({
+		name: Joi.string(),
+		phoneNumber: Joi.string()
+			.length(10)
+			.pattern(/^[0-9]+$/),
+		address: Joi.string(),
+		city: Joi.string().min(5).max(32),
+		pincode: Joi.string()
+			.length(6)
+			.pattern(/^[0-9]+$/)
+	});
+
+	return schema.validate(data);
+};

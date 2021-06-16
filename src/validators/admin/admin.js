@@ -11,3 +11,11 @@ export const createAdminValidator = data => {
 
 	return schema.validate(data);
 };
+
+export const updateAdminValidator = data => {
+	const schema = Joi.object({
+		name: Joi.string().required()
+	});
+
+	return schema.validate(data);
+};

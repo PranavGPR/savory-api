@@ -22,7 +22,7 @@ export const createAdmin = async (req, res) => {
 
 	const id = uuidv4();
 
-	const result = await query('insert into admin(id,name,password,email) values(?,?,?,?)', [
+	const result = await query('insert into admins(id,name,password,email) values(?,?,?,?)', [
 		id,
 		name,
 		password,
@@ -40,7 +40,7 @@ export const createAdmin = async (req, res) => {
  * @returns [admins] | 'No records found'
  */
 export const getAdmins = async (req, res) => {
-	const result = await query('select * from admin');
+	const result = await query('select * from admins');
 
 	if (!result.length) return sendFailure(res, { error: 'No records found' });
 
@@ -55,7 +55,7 @@ export const getAdmins = async (req, res) => {
 export const getAdminById = async (req, res) => {
 	const { id } = req.params;
 
-	const result = await query('select * from admin where id=?', [id]);
+	const result = await query('select * from admins where id=?', [id]);
 
 	if (!result.length) return sendFailure(res, { error: 'No records found' });
 
@@ -71,7 +71,7 @@ export const getAdminById = async (req, res) => {
 export const deleteAdmin = async (req, res) => {
 	const { id } = req.params;
 
-	const result = await query('delete from admin where id=?', [id]);
+	const result = await query('delete from admins where id=?', [id]);
 
 	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully deleted' });
 
@@ -96,7 +96,7 @@ export const updateAdmin = async (req, res) => {
 	let objValues = Object.values(body);
 	objValues.push(id);
 
-	const result = await query(`update admin set ${fields} where id=?`, objValues);
+	const result = await query(`update admins set ${fields} where id=?`, objValues);
 
 	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated' });
 

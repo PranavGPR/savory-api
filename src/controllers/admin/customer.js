@@ -23,7 +23,7 @@ export const createCustomer = async (req, res) => {
 	const { name, password, phoneNumber, email, address, city, pincode } = body;
 
 	const result = await query(
-		'insert into customer(id,name,phoneNumber,email,password,address,city,pincode) values(?,?,?,?,?,?,?,?)',
+		'insert into customers(id,name,phoneNumber,email,password,address,city,pincode) values(?,?,?,?,?,?,?,?)',
 		[id, name, phoneNumber, email, password, address, city, pincode]
 	);
 
@@ -38,7 +38,7 @@ export const createCustomer = async (req, res) => {
  * @returns [customers] | 'No records found'
  */
 export const getCustomers = async (req, res) => {
-	const result = await query('select * from customer');
+	const result = await query('select * from customers');
 
 	if (!result.length) return sendFailure(res, { error: 'No records found' });
 
@@ -53,7 +53,7 @@ export const getCustomers = async (req, res) => {
 export const getCustomerById = async (req, res) => {
 	const { id } = req.params;
 
-	const result = await query('select * from customer where id=?', [id]);
+	const result = await query('select * from customers where id=?', [id]);
 
 	if (!result.length) return sendFailure(res, { error: 'No records found' });
 
@@ -69,7 +69,7 @@ export const getCustomerById = async (req, res) => {
 export const deleteCustomer = async (req, res) => {
 	const { id } = req.params;
 
-	const result = await query('delete from customer where id=?', [id]);
+	const result = await query('delete from customers where id=?', [id]);
 
 	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully deleted' });
 
@@ -94,7 +94,7 @@ export const updateCustomer = async (req, res) => {
 	let objValues = Object.values(body);
 	objValues.push(id);
 
-	const result = await query(`update customer set ${fields} where id=?`, objValues);
+	const result = await query(`update customers set ${fields} where id=?`, objValues);
 
 	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated' });
 

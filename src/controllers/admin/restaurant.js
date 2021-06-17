@@ -35,7 +35,7 @@ export const createRestaurant = async (req, res) => {
 	} = body;
 
 	const result = await query(
-		`insert into restaurant(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+		`insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
 		[
 			id,
 			'77e39eec-a0a4-4efc-a971-bf0a8427aa88',
@@ -65,7 +65,7 @@ export const createRestaurant = async (req, res) => {
  * @returns [restaurants] | 'No records found'
  */
 export const getRestaurants = async (req, res) => {
-	const result = await query('select * from restaurant');
+	const result = await query('select * from restaurants');
 
 	if (!result.length) return sendFailure(res, { error: 'No records found' });
 
@@ -80,7 +80,7 @@ export const getRestaurants = async (req, res) => {
 export const getRestaurantById = async (req, res) => {
 	const { id } = req.params;
 
-	const result = await query('select * from restaurant where id=?', [id]);
+	const result = await query('select * from restaurants where id=?', [id]);
 
 	if (!result.length) return sendFailure(res, { error: 'No records found' });
 
@@ -96,7 +96,7 @@ export const getRestaurantById = async (req, res) => {
 export const deleteRestaurant = async (req, res) => {
 	const { id } = req.params;
 
-	const result = await query('delete from restaurant where id=?', [id]);
+	const result = await query('delete from restaurants where id=?', [id]);
 
 	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully deleted' });
 
@@ -121,7 +121,7 @@ export const updateRestaurant = async (req, res) => {
 	let objValues = Object.values(body);
 	objValues.push(id);
 
-	const result = await query(`update restaurant set ${fields} where id=?`, objValues);
+	const result = await query(`update restaurants set ${fields} where id=?`, objValues);
 
 	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated' });
 

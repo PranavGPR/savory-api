@@ -7,7 +7,6 @@ import { query } from 'helpers/dbConnection';
 
 let server;
 let id;
-let payload;
 
 describe('/customer/', () => {
 	beforeEach(() => {
@@ -19,7 +18,7 @@ describe('/customer/', () => {
 
 	describe('GET customer/', () => {
 		afterEach(async () => {
-			await query('delete from customer');
+			await query('delete from customers');
 		});
 
 		const exec = () => {
@@ -36,7 +35,7 @@ describe('/customer/', () => {
 		it('should get all customers', async () => {
 			id = uuidv4();
 			await query(
-				'insert into customer(id,name,phoneNumber,email,password,address,city,pincode) values(?,?,?,?,?,?,?,?)',
+				'insert into customers(id,name,phoneNumber,email,password,address,city,pincode) values(?,?,?,?,?,?,?,?)',
 				[id, 'Pranav', 9750844039, 'pranav123@email.com', '12345678', '', '', '']
 			);
 
@@ -52,7 +51,7 @@ describe('/customer/', () => {
 		});
 
 		afterEach(async () => {
-			await query('delete from customer');
+			await query('delete from customers');
 		});
 
 		const exec = () => {
@@ -77,7 +76,7 @@ describe('/customer/', () => {
 		it('should return 200 if customer exists', async () => {
 			id = uuidv4();
 			await query(
-				'insert into customer(id,name,phoneNumber,email,password,address,city,pincode) values(?,?,?,?,?,?,?,?)',
+				'insert into customers(id,name,phoneNumber,email,password,address,city,pincode) values(?,?,?,?,?,?,?,?)',
 				[id, 'Pranav', 9750844039, 'pranav123@email.com', '12345678', '', '', '']
 			);
 
@@ -89,12 +88,12 @@ describe('/customer/', () => {
 
 	describe('PUT /:id', () => {
 		id = uuidv4();
-		payload = {
+		let payload = {
 			name: 'GPR'
 		};
 
 		beforeEach(async () => {
-			await query('insert into customer(id,name,phoneNumber,email,password) values(?,?,?,?,?)', [
+			await query('insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)', [
 				id,
 				'Pranav',
 				'9750844039',
@@ -104,7 +103,7 @@ describe('/customer/', () => {
 		});
 
 		afterEach(async () => {
-			await query('delete from customer');
+			await query('delete from customers');
 		});
 
 		const exec = () => {
@@ -130,7 +129,6 @@ describe('/customer/', () => {
 		});
 
 		it('should return 200 if one field is updated', async () => {
-			payload.name = 'GPR';
 			const res = await exec();
 
 			expect(res.status).toBe(200);
@@ -138,9 +136,7 @@ describe('/customer/', () => {
 		});
 
 		it('should return 200 if more than one fields are updated', async () => {
-			payload.name = 'GPR';
-			payload.email = 'pranav@email.com';
-			payload.password = 'pranav_23';
+			payload.phoneNumber = '9750844040';
 
 			const res = await exec();
 
@@ -153,7 +149,7 @@ describe('/customer/', () => {
 		id = uuidv4();
 
 		beforeEach(async () => {
-			await query('insert into customer(id,name,phoneNumber,email,password) values(?,?,?,?,?)', [
+			await query('insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)', [
 				id,
 				'Pranav',
 				'9750844039',
@@ -163,7 +159,7 @@ describe('/customer/', () => {
 		});
 
 		afterEach(async () => {
-			await query('delete from customer');
+			await query('delete from customers');
 		});
 
 		const exec = () => {
@@ -197,13 +193,13 @@ describe('/customer/', () => {
 	});
 
 	describe('POST /create', () => {
-		payload = {
+		let payload = {
 			name: 'Pranav',
 			password: 'Pranav@23'
 		};
 
 		afterEach(async () => {
-			await query('delete from customer');
+			await query('delete from customers');
 		});
 
 		const exec = () => {

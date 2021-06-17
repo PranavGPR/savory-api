@@ -19,7 +19,7 @@ describe('/restaurant/', () => {
 
 	describe('GET customer/', () => {
 		afterEach(async () => {
-			await query('delete from restaurant');
+			await query('delete from restaurants');
 		});
 
 		const exec = () => {
@@ -37,7 +37,7 @@ describe('/restaurant/', () => {
 			id = uuidv4();
 
 			await query(
-				'insert into restaurant(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 				[
 					id,
 					'77e39eec-a0a4-4efc-a971-bf0a8427aa88',
@@ -68,7 +68,7 @@ describe('/restaurant/', () => {
 		});
 
 		afterEach(async () => {
-			await query('delete from restaurant');
+			await query('delete from restaurants');
 		});
 
 		const exec = () => {
@@ -94,7 +94,7 @@ describe('/restaurant/', () => {
 			id = uuidv4();
 
 			await query(
-				'insert into restaurant(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 				[
 					id,
 					'77e39eec-a0a4-4efc-a971-bf0a8427aa88',
@@ -127,7 +127,7 @@ describe('/restaurant/', () => {
 
 		beforeEach(async () => {
 			await query(
-				'insert into restaurant(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 				[
 					id,
 					'77e39eec-a0a4-4efc-a971-bf0a8427aa88',
@@ -148,7 +148,7 @@ describe('/restaurant/', () => {
 		});
 
 		afterEach(async () => {
-			await query('delete from restaurant');
+			await query('delete from restaurants');
 		});
 
 		const exec = () => {
@@ -198,7 +198,7 @@ describe('/restaurant/', () => {
 
 		beforeEach(async () => {
 			await query(
-				'insert into restaurant(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 				[
 					id,
 					'77e39eec-a0a4-4efc-a971-bf0a8427aa88',
@@ -219,7 +219,7 @@ describe('/restaurant/', () => {
 		});
 
 		afterEach(async () => {
-			await query('delete from restaurant');
+			await query('delete from restaurants');
 		});
 
 		const exec = () => {
@@ -267,7 +267,7 @@ describe('/restaurant/', () => {
 		};
 
 		afterEach(async () => {
-			await query('delete from restaurant');
+			await query('delete from restaurants');
 		});
 
 		const exec = () => {

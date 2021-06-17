@@ -7,7 +7,6 @@ import { query } from 'helpers/dbConnection';
 
 let server;
 let id;
-let payload;
 
 describe('/admin/', () => {
 	beforeEach(() => {
@@ -19,7 +18,7 @@ describe('/admin/', () => {
 
 	describe('GET /all', () => {
 		afterEach(async () => {
-			await query('delete from admin');
+			await query('delete from admins');
 		});
 
 		const exec = () => {
@@ -35,7 +34,7 @@ describe('/admin/', () => {
 		it('should get all admins', async () => {
 			id = uuidv4();
 
-			await query('insert into admin(id,name,password,email) values(?,?,?,?)', [
+			await query('insert into admins(id,name,password,email) values(?,?,?,?)', [
 				id,
 				'Pranav',
 				'Pranav@23',
@@ -54,7 +53,7 @@ describe('/admin/', () => {
 		});
 
 		afterEach(async () => {
-			await query('delete from admin');
+			await query('delete from admins');
 		});
 
 		const exec = () => {
@@ -76,7 +75,7 @@ describe('/admin/', () => {
 
 		it('should return 200 if admin exists', async () => {
 			id = uuidv4();
-			await query('insert into admin(id,name,password,email) values(?,?,?,?)', [
+			await query('insert into admins(id,name,password,email) values(?,?,?,?)', [
 				id,
 				'Pranav',
 				'Pranav@23',
@@ -91,12 +90,12 @@ describe('/admin/', () => {
 
 	describe('PUT /:id', () => {
 		id = uuidv4();
-		payload = {
+		let payload = {
 			name: 'GPR'
 		};
 
 		beforeEach(async () => {
-			await query('insert into admin(id,name,password,email) values(?,?,?,?)', [
+			await query('insert into admins(id,name,password,email) values(?,?,?,?)', [
 				id,
 				'Pranav',
 				'Pranav@23',
@@ -105,7 +104,7 @@ describe('/admin/', () => {
 		});
 
 		afterEach(async () => {
-			await query('delete from admin');
+			await query('delete from admins');
 		});
 
 		const exec = () => {
@@ -142,7 +141,7 @@ describe('/admin/', () => {
 		id = uuidv4();
 
 		beforeEach(async () => {
-			await query('insert into admin(id,name,password,email) values(?,?,?,?)', [
+			await query('insert into admins(id,name,password,email) values(?,?,?,?)', [
 				id,
 				'Pranav',
 				'Pranav@23',
@@ -151,7 +150,7 @@ describe('/admin/', () => {
 		});
 
 		afterEach(async () => {
-			await query('delete from admin');
+			await query('delete from admins');
 		});
 
 		const exec = () => {
@@ -185,13 +184,13 @@ describe('/admin/', () => {
 	});
 
 	describe('POST /create', () => {
-		payload = {
+		let payload = {
 			name: 'Pranav',
 			password: 'Pranav@23'
 		};
 
 		afterEach(async () => {
-			await query('delete from admin');
+			await query('delete from admins');
 		});
 
 		const exec = () => {

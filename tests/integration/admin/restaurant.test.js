@@ -7,7 +7,6 @@ import { query } from 'helpers/dbConnection';
 
 let server;
 let id;
-let payload;
 
 describe('/restaurant/', () => {
 	beforeEach(() => {
@@ -121,7 +120,7 @@ describe('/restaurant/', () => {
 
 	describe('PUT /:id', () => {
 		id = uuidv4();
-		payload = {
+		let payload = {
 			name: 'Pranav'
 		};
 
@@ -253,7 +252,7 @@ describe('/restaurant/', () => {
 	});
 
 	describe('POST /create', () => {
-		payload = {
+		let payload = {
 			name: 'Restaurant',
 			address: '4/1252, Street',
 			city: 'Madurai',

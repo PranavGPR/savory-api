@@ -4,12 +4,8 @@ import { StatusCodes } from 'http-status-codes';
 export default (err, req, res, next) => {
 	logger.error(err.message ?? err);
 
-	if (err.errno == 1062) {
-		return res.status(StatusCodes.BAD_REQUEST).json({ error: err.message });
-	}
-
-	if (err.errno === 1136) {
-		return res.status(StatusCodes.BAD_REQUEST).json({ error: err.message });
+	if (err.errno === 1062 || 1136) {
+		return res.status(StatusCodes.BAD_REQUEST).json({ errorCode: err.errno, error: err.message });
 	}
 
 	res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

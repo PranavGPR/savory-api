@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
 import { sendFailure, sendSuccess } from 'helpers';
-import logger from 'tools/logger';
 
 /**
  * Controllers for all /admin/restaurant routes

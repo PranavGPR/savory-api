@@ -8,17 +8,17 @@ import {
 	getAdmins,
 	updateAdmin
 } from 'controllers/admin';
-import { uuidValidator } from 'middlewares';
+import { auth, isAdmin, uuidValidator } from 'middlewares';
 import { validateBody } from 'helpers';
-import { createAdminValidator, updateAdminValidator } from 'validators/admin';
+import { adminLoginValidator, createAdminValidator, updateAdminValidator } from 'validators/admin';
 
 const router = Router();
 
-router.post('/login', adminLogin);
-router.post('/create', validateBody(createAdminValidator), createAdmin);
-router.get('/all', getAdmins);
-router.put('/:id', uuidValidator, validateBody(updateAdminValidator), updateAdmin);
-router.delete('/:id', uuidValidator, deleteAdmin);
-router.get('/:id', uuidValidator, getAdminById);
+router.post('/login', validateBody(adminLoginValidator), adminLogin);
+router.post('/create', auth, isAdmin, validateBody(createAdminValidator), createAdmin);
+router.get('/all', auth, isAdmin, getAdmins);
+router.put('/:id', auth, isAdmin, uuidValidator, validateBody(updateAdminValidator), updateAdmin);
+router.delete('/:id', auth, isAdmin, uuidValidator, deleteAdmin);
+router.get('/:id', auth, isAdmin, uuidValidator, getAdminById);
 
 export default router;

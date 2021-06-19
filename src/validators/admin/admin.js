@@ -19,3 +19,14 @@ export const updateAdminValidator = data => {
 
 	return schema.validate(data);
 };
+
+export const adminLoginValidator = data => {
+	const schema = Joi.object({
+		email: Joi.string()
+			.email({ tlds: { allow: false } })
+			.required(),
+		password: Joi.string().min(8).max(256).required()
+	});
+
+	return schema.validate(data);
+};

@@ -8,7 +8,6 @@ const { jwtPrivateKey } = process.env;
 export default (req, res, next) => {
 	const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
 
-	logger.info(req.headers.authorization.split(' ')[1]);
 	if (!token) return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Access denied.' });
 
 	try {

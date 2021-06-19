@@ -128,7 +128,8 @@ export const adminLogin = async (req, res) => {
 
 	const match = await bcrypt.compare(password, result[0].password);
 
-	if (!match) return sendFailure(res, { error: 'Email or Password incorrect' });
+	if (!match)
+		return sendFailure(res, { error: 'Email or Password incorrect' }, StatusCodes.BAD_REQUEST);
 
 	const { id, name } = result[0];
 

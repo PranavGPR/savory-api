@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import { v4 as uuidv4 } from 'uuid';
+import bcrypt from 'bcrypt';
 
 import { query } from 'helpers/dbConnection';
 import { generateToken, sendFailure, sendSuccess } from 'helpers';
@@ -16,11 +17,13 @@ import { generateToken, sendFailure, sendSuccess } from 'helpers';
  * @returns 'Successfully Inserted' | 'Error in inserting the values'
  */
 export const createAdmin = async (req, res) => {
-	const {
+	let {
 		body: { name, password, email }
 	} = req;
 
 	const id = uuidv4();
+
+	password = await bcrypt.hash(password, 10);
 
 	const result = await query('insert into admins(id,name,password,email) values(?,?,?,?)', [
 		id,
@@ -122,6 +125,10 @@ export const adminLogin = async (req, res) => {
 	const result = await query('select * from admins where email=?', [email]);
 
 	if (!result.length) return sendFailure(res, { error: 'Email or Password incorrect' });
+
+	const match = await bcrypt.compare(password, result[0].password);
+
+	if (!match) return sendFailure(res, { error: 'Email or Password incorrect' });
 
 	const { id, name } = result[0];
 

@@ -1,4 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
+import jwt from 'jsonwebtoken';
+import 'dotenv/config';
+
+const { jwtPrivateKey } = process.env;
 
 export const sendSuccess = (res, body) => {
 	return res.status(StatusCodes.OK).json(body);
@@ -15,4 +19,8 @@ export const validateBody = (validator, params = false) => {
 
 		next();
 	};
+};
+
+export const generateToken = payload => {
+	return jwt.sign(payload, jwtPrivateKey);
 };

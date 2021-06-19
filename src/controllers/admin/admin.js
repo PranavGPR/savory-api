@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
-import { sendFailure, sendSuccess } from 'helpers';
+import { generateToken, sendFailure, sendSuccess } from 'helpers';
 
 /**
  * Controllers for all /admin routes
@@ -101,4 +101,31 @@ export const updateAdmin = async (req, res) => {
 	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated' });
 
 	return sendFailure(res, { error: 'No records found' });
+};
+
+/**
+ *
+ * Admin Login
+ *
+ * @route: /login
+ * @method: POST
+ * @requires: body{ email, password}
+ * @returns: 'Logged in Successfully' | 'Could not login'
+ *
+ */
+
+export const adminLogin = async (req, res) => {
+	const {
+		body: { email, password }
+	} = req;
+
+	const result = await query('select * from admins where email=?', [email]);
+
+	if (!result.length) return sendFailure(res, { error: 'Email or Password incorrect' });
+
+	const { id, name } = result[0];
+
+	const token = generateToken({ role: 'admin', id, name });
+
+	return sendSuccess(res, { message: `You're logged in`, token, name });
 };

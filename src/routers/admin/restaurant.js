@@ -7,16 +7,23 @@ import {
 	getRestaurants,
 	updateRestaurant
 } from 'controllers/admin';
-import { uuidValidator } from 'middlewares';
+import { auth, isAdmin, uuidValidator } from 'middlewares';
 import { validateBody } from 'helpers';
 import { createRestaurantValidator, updateRestaurantValidator } from 'validators/admin';
 
 const router = Router();
 
-router.post('/create', validateBody(createRestaurantValidator), createRestaurant);
-router.get('/all', getRestaurants);
-router.put('/:id', uuidValidator, validateBody(updateRestaurantValidator), updateRestaurant);
-router.delete('/:id', uuidValidator, deleteRestaurant);
-router.get('/:id', uuidValidator, getRestaurantById);
+router.post('/create', auth, isAdmin, validateBody(createRestaurantValidator), createRestaurant);
+router.get('/all', auth, isAdmin, getRestaurants);
+router.put(
+	'/:id',
+	auth,
+	isAdmin,
+	uuidValidator,
+	validateBody(updateRestaurantValidator),
+	updateRestaurant
+);
+router.delete('/:id', auth, isAdmin, uuidValidator, deleteRestaurant);
+router.get('/:id', auth, isAdmin, uuidValidator, getRestaurantById);
 
 export default router;

@@ -4,6 +4,7 @@ import 'regenerator-runtime/runtime';
 import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
+import { generateBearerToken } from '../functions';
 
 let server;
 let id;
@@ -17,13 +18,26 @@ describe('/order/', () => {
 	});
 
 	describe('GET order/', () => {
+		let token;
+
+		beforeEach(() => {
+			token = generateBearerToken('admin');
+		});
+
 		afterEach(async () => {
 			await query('delete from orders');
 		});
 
 		const exec = () => {
-			return request(server).get('/admin/order/all');
+			return request(server).get('/admin/order/all').set('Authorization', token);
 		};
+
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
 
 		it('should return 404 if no orders found', async () => {
 			const res = await exec();
@@ -65,8 +79,11 @@ describe('/order/', () => {
 	});
 
 	describe('GET /:id', () => {
+		let token;
+
 		beforeEach(() => {
 			id = 'test';
+			token = generateBearerToken('admin');
 		});
 
 		afterEach(async () => {
@@ -74,8 +91,15 @@ describe('/order/', () => {
 		});
 
 		const exec = () => {
-			return request(server).get(`/admin/order/${id}`);
+			return request(server).get(`/admin/order/${id}`).set('Authorization', token);
 		};
+
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
 
 		it('should return 400 if id is not valid', async () => {
 			const res = await exec();
@@ -125,6 +149,7 @@ describe('/order/', () => {
 	});
 
 	describe('PUT /:id', () => {
+		let token;
 		id = uuidv4();
 		let payload = {
 			status: 'delivering'
@@ -153,6 +178,7 @@ describe('/order/', () => {
 					'COD'
 				]
 			);
+			token = generateBearerToken('admin');
 		});
 
 		afterEach(async () => {
@@ -160,8 +186,15 @@ describe('/order/', () => {
 		});
 
 		const exec = () => {
-			return request(server).put(`/admin/order/${id}`).send(payload);
+			return request(server).put(`/admin/order/${id}`).set('Authorization', token).send(payload);
 		};
+
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
 
 		it('should return 400 if id is not valid', async () => {
 			id = 'test';
@@ -199,6 +232,7 @@ describe('/order/', () => {
 	});
 
 	describe('DELETE /:id', () => {
+		let token;
 		id = uuidv4();
 
 		beforeEach(async () => {
@@ -224,6 +258,7 @@ describe('/order/', () => {
 					'COD'
 				]
 			);
+			token = generateBearerToken('admin');
 		});
 
 		afterEach(async () => {
@@ -231,8 +266,15 @@ describe('/order/', () => {
 		});
 
 		const exec = () => {
-			return request(server).delete(`/admin/order/${id}`);
+			return request(server).delete(`/admin/order/${id}`).set('Authorization', token);
 		};
+
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
 
 		it('should return 400 if id is not valid', async () => {
 			id = 'test';

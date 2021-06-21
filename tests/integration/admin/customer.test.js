@@ -4,6 +4,7 @@ import 'regenerator-runtime/runtime';
 import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
+import { generateBearerToken } from '../functions';
 
 let server;
 let id;
@@ -12,20 +13,30 @@ describe('/customer/', () => {
 	beforeEach(() => {
 		server = require('../../../src/server');
 	});
-	afterEach(() => {
-		server.close();
+	afterEach(async () => {
+		await server.close();
 	});
 
-	describe('GET customer/', () => {
+	describe('GET all/', () => {
+		let token;
+
 		afterEach(async () => {
 			await query('delete from customers');
 		});
 
 		const exec = () => {
-			return request(server).get('/admin/customer/all');
+			return request(server).get('/admin/customer/all').set('Authorization', token);
 		};
 
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
+
 		it('should return 404 if no customers found', async () => {
+			token = generateBearerToken('admin');
 			const res = await exec();
 
 			expect(res.status).toBe(404);
@@ -36,8 +47,10 @@ describe('/customer/', () => {
 			id = uuidv4();
 			await query(
 				'insert into customers(id,name,phoneNumber,email,password,address,city,pincode) values(?,?,?,?,?,?,?,?)',
-				[id, 'Pranav', 9750844039, 'pranav123@email.com', '12345678', '', '', '']
+				[id, 'Pranav', '9750844039', 'pranav123@email.com', '12345678', '', '', '']
 			);
+
+			token = generateBearerToken('admin');
 
 			const res = await exec();
 
@@ -46,8 +59,11 @@ describe('/customer/', () => {
 	});
 
 	describe('GET /:id', () => {
+		let token;
+
 		beforeEach(() => {
 			id = 'test';
+			token = generateBearerToken('admin');
 		});
 
 		afterEach(async () => {
@@ -55,8 +71,15 @@ describe('/customer/', () => {
 		});
 
 		const exec = () => {
-			return request(server).get(`/admin/customer/${id}`);
+			return request(server).get(`/admin/customer/${id}`).set('Authorization', token);
 		};
+
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
 
 		it('should return 400 if id is not valid', async () => {
 			const res = await exec();
@@ -87,6 +110,7 @@ describe('/customer/', () => {
 	});
 
 	describe('PUT /:id', () => {
+		let token;
 		id = uuidv4();
 		let payload = {
 			name: 'GPR'
@@ -100,6 +124,7 @@ describe('/customer/', () => {
 				'pranav@email.com',
 				'Pranav@23'
 			]);
+			token = generateBearerToken('admin');
 		});
 
 		afterEach(async () => {
@@ -107,8 +132,15 @@ describe('/customer/', () => {
 		});
 
 		const exec = () => {
-			return request(server).put(`/admin/customer/${id}`).send(payload);
+			return request(server).put(`/admin/customer/${id}`).set('Authorization', token).send(payload);
 		};
+
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
 
 		it('should return 400 if id is not valid', async () => {
 			id = 'test';
@@ -146,6 +178,7 @@ describe('/customer/', () => {
 	});
 
 	describe('DELETE /:id', () => {
+		let token;
 		id = uuidv4();
 
 		beforeEach(async () => {
@@ -156,6 +189,7 @@ describe('/customer/', () => {
 				'pranav@email.com',
 				'Pranav@23'
 			]);
+			token = generateBearerToken('admin');
 		});
 
 		afterEach(async () => {
@@ -163,8 +197,15 @@ describe('/customer/', () => {
 		});
 
 		const exec = () => {
-			return request(server).delete(`/admin/customer/${id}`);
+			return request(server).delete(`/admin/customer/${id}`).set('Authorization', token);
 		};
+
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
 
 		it('should return 400 if id is not valid', async () => {
 			id = 'test';
@@ -193,18 +234,33 @@ describe('/customer/', () => {
 	});
 
 	describe('POST /create', () => {
+		let token;
 		let payload = {
 			name: 'Pranav',
 			password: 'Pranav@23'
 		};
+
+		beforeEach(() => {
+			token = generateBearerToken('admin');
+		});
 
 		afterEach(async () => {
 			await query('delete from customers');
 		});
 
 		const exec = () => {
-			return request(server).post('/admin/customer/create').send(payload);
+			return request(server)
+				.post('/admin/customer/create')
+				.set('Authorization', token)
+				.send(payload);
 		};
+
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
 
 		it('should return 404 if any fields are not provided', async () => {
 			const res = await exec();

@@ -2,4 +2,4 @@
 
 Frontend Repo: [Savory](https://github.com/PranavGPR/savory)
 
-The Backend API Repository for Savory.
+The Backend Node.js API Repository for Savory.

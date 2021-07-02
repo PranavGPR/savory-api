@@ -100,3 +100,22 @@ export const updateCustomer = async (req, res) => {
 
 	return sendFailure(res, { error: 'No records found' });
 };
+
+/**
+ *
+ * Get count of customers
+ *
+ * @route: /getCustomersCount
+ * @method: GET
+ * @requires: body{}
+ * @returns: {count(customers)}
+ *
+ */
+
+export const getCustomersCount = async (req, res) => {
+	const result = await query('select count(name) from customers');
+
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
+
+	return sendSuccess(res, { result: Object.values(result[0])[0] });
+};

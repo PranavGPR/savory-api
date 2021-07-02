@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import { StatusCodes } from 'http-status-codes';
-import logger from 'tools/logger';
 
 const { jwtPrivateKey } = process.env;
 

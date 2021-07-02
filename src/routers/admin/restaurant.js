@@ -5,6 +5,7 @@ import {
 	deleteRestaurant,
 	getRestaurantById,
 	getRestaurants,
+	getRestaurantsCount,
 	updateRestaurant
 } from 'controllers/admin';
 import { auth, isAdmin, uuidValidator } from 'middlewares';
@@ -15,6 +16,7 @@ const router = Router();
 
 router.post('/create', auth, isAdmin, validateBody(createRestaurantValidator), createRestaurant);
 router.get('/all', auth, isAdmin, getRestaurants);
+router.get('/getRestaurantsCount', auth, isAdmin, getRestaurantsCount);
 router.put(
 	'/:id',
 	auth,

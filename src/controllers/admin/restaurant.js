@@ -127,3 +127,22 @@ export const updateRestaurant = async (req, res) => {
 
 	return sendFailure(res, { error: 'No records found' });
 };
+
+/**
+ *
+ * Get count of restaurants
+ *
+ * @route: /getRestaurantsCount
+ * @method: GET
+ * @requires: body{}
+ * @returns: {count(restaurants)}
+ *
+ */
+
+export const getRestaurantsCount = async (req, res) => {
+	const result = await query('select count(name) from restaurants');
+
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
+
+	return sendSuccess(res, { result: Object.values(result[0])[0] });
+};

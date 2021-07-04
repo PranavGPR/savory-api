@@ -16,7 +16,7 @@ const router = Router();
 
 router.post('/create', auth, isAdmin, validateBody(createRestaurantValidator), createRestaurant);
 router.get('/all', auth, isAdmin, getRestaurants);
-router.get('/getRestaurantsCount', auth, isAdmin, getRestaurantsCount);
+router.get('/count', auth, isAdmin, getRestaurantsCount);
 router.put(
 	'/:id',
 	auth,

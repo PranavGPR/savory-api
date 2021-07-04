@@ -17,7 +17,7 @@ describe('/customer/', () => {
 		await server.close();
 	});
 
-	describe('GET all/', () => {
+	describe('GET /all', () => {
 		let token;
 
 		afterEach(async () => {
@@ -275,6 +275,47 @@ describe('/customer/', () => {
 			const res = await exec();
 
 			expect(res.status).toBe(200);
+		});
+	});
+
+	describe('GET /count', () => {
+		let token;
+
+		beforeEach(() => {
+			token = generateBearerToken('admin');
+		});
+
+		const exec = () => {
+			return request(server).get('/admin/customer/count').set('Authorization', token);
+		};
+
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
+
+		it('should return 200 if customers are found', async () => {
+			id = uuidv4();
+			await query(
+				'insert into customers(id,name,phoneNumber,email,password,address,city,pincode) values(?,?,?,?,?,?,?,?)',
+				[id, 'Pranav', 9750844039, 'pranav123@email.com', '12345678', '', '', '']
+			);
+
+			const res = await exec();
+
+			expect(res.status).toBe(200);
+			expect(res.body).toHaveProperty('result');
+			expect(typeof res.body.result).toBe('number');
+		});
+
+		it('should return 404 if no records found', async () => {
+			await query('delete from customers');
+			const res = await exec();
+
+			expect(res.status).toBe(404);
+			expect(res.body).toHaveProperty('error', 'No records found');
 		});
 	});
 });

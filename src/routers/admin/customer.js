@@ -16,7 +16,7 @@ const router = Router();
 
 router.post('/create', auth, isAdmin, validateBody(createCustomerValidator), createCustomer);
 router.get('/all', auth, isAdmin, getCustomers);
-router.get('/getCustomersCount', auth, isAdmin, getCustomersCount);
+router.get('/count', auth, isAdmin, getCustomersCount);
 router.put(
 	'/:id',
 	auth,

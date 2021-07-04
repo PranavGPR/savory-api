@@ -115,7 +115,9 @@ export const updateCustomer = async (req, res) => {
 export const getCustomersCount = async (req, res) => {
 	const result = await query('select count(name) from customers');
 
-	if (!result.length) return sendFailure(res, { error: 'No records found' });
+	const countValue = Object.values(result[0])[0];
 
-	return sendSuccess(res, { result: Object.values(result[0])[0] });
+	if (countValue === 0) return sendFailure(res, { error: 'No records found' });
+
+	return sendSuccess(res, { result: countValue });
 };

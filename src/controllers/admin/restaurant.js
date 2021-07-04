@@ -142,7 +142,9 @@ export const updateRestaurant = async (req, res) => {
 export const getRestaurantsCount = async (req, res) => {
 	const result = await query('select count(name) from restaurants');
 
-	if (!result.length) return sendFailure(res, { error: 'No records found' });
+	const countValue = Object.values(result[0])[0];
+
+	if (!countValue) return sendFailure(res, { error: 'No records found' });
 
 	return sendSuccess(res, { result: Object.values(result[0])[0] });
 };

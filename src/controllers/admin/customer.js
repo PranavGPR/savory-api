@@ -117,7 +117,7 @@ export const getCustomersCount = async (req, res) => {
 
 	const countValue = Object.values(result[0])[0];
 
-	if (countValue === 0) return sendFailure(res, { error: 'No records found' });
+	if (!countValue) return sendFailure(res, { error: 'No records found' });
 
 	return sendSuccess(res, { result: countValue });
 };

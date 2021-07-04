@@ -349,4 +349,60 @@ describe('/restaurant/', () => {
 			expect(res.status).toBe(200);
 		});
 	});
+
+	describe('GET /count', () => {
+		let token;
+
+		beforeEach(() => {
+			token = generateBearerToken('admin');
+		});
+
+		const exec = () => {
+			return request(server).get('/admin/restaurant/count').set('Authorization', token);
+		};
+
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
+
+		it('should return 200 if restaurants are found', async () => {
+			id = uuidv4();
+			await query(
+				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				[
+					id,
+					'77e39eec-a0a4-4efc-a971-bf0a8427aa88',
+					'Restaurant',
+					'9750844040',
+					'restaurant1@email.com',
+					'4/1252, Street',
+					'Madurai',
+					'625020',
+					JSON.stringify(['Chinese', 'North Indian', 'South Indian']),
+					'08:00:00',
+					'20:00:00',
+					JSON.stringify(['Tikka Gravy', 'Paneer Masala']),
+					JSON.stringify(['Good service']),
+					JSON.stringify(['Valet Parking'])
+				]
+			);
+
+			const res = await exec();
+
+			expect(res.status).toBe(200);
+			expect(res.body).toHaveProperty('result');
+			expect(typeof res.body.result).toBe('number');
+		});
+
+		it('should return 404 if no records found', async () => {
+			await query('delete from restaurants');
+			const res = await exec();
+
+			expect(res.status).toBe(404);
+			expect(res.body).toHaveProperty('error', 'No records found');
+		});
+	});
 });

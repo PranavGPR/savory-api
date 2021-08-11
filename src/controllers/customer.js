@@ -1,11 +1,12 @@
 import { StatusCodes } from 'http-status-codes';
 
 import { query } from 'helpers/dbConnection';
+import { sendFailure, sendSuccess } from 'helpers';
 
 /**
  * Update a customer
  * @param {id, address, city, pincode}
- * @returns 'Customer Updated' | 'No records found!'
+ * @returns 'Successfully Updated' | 'No records found!'
  */
 
 export const updateCustomer = async (req, res) => {
@@ -20,23 +21,21 @@ export const updateCustomer = async (req, res) => {
 		const result = await query('update customer set pincode=? where id=?', [pincode, id]);
 
 		if (result.affectedRows)
-			return res.status(StatusCodes.OK).json({ message: 'Successfully updated profile image!' });
+			return sendSuccess(res, { message: 'Successfully updated profile image!' });
 
-		return res.status(StatusCodes.NOT_FOUND).json({ message: 'No records found!' });
+		return sendFailure(res, { message: 'No records found!' });
 	} else if (!address && !pincode) {
 		const result = await query('update customer set city=? where id=?', [city, id]);
 
-		if (result.affectedRows)
-			return res.status(StatusCodes.OK).json({ message: 'Successfully updated address!' });
+		if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated address!' });
 
-		return res.status(StatusCodes.NOT_FOUND).json({ message: 'No records found!' });
+		return sendFailure(res, { message: 'No records found!' });
 	} else if (!city && !pincode) {
 		const result = await query('update customer set address=? where id=?', [address, id]);
 
-		if (result.affectedRows)
-			return res.status(StatusCodes.OK).json({ message: 'Successfully updated address!' });
+		if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated address!' });
 
-		return res.status(StatusCodes.NOT_FOUND).json({ message: 'No records found!' });
+		return sendFailure(res, { message: 'No records found!' });
 	} else {
 		const result = await query('update customer set address=?, city=? where pincode=?', [
 			address,
@@ -44,9 +43,8 @@ export const updateCustomer = async (req, res) => {
 			pincode
 		]);
 
-		if (result.affectedRows)
-			return res.status(StatusCodes.OK).json({ message: 'Successfully updated!' });
+		if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated!' });
 	}
 
-	return res.status(StatusCodes.NOT_FOUND).json({ message: 'No records found!' });
+	return sendFailure(res, { message: 'No records found!' });
 };

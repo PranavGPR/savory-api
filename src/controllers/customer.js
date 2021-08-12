@@ -1,7 +1,16 @@
 import { StatusCodes } from 'http-status-codes';
+import bcrypt from 'bcrypt';
 
 import { query } from 'helpers/dbConnection';
-import { sendFailure, sendSuccess } from 'helpers';
+import { generateToken, sendFailure, sendSuccess } from 'helpers';
+
+/**
+ * Create an order
+ * @param {}
+ * @returns 'Order placed' | 'Error in creating an order'
+ */
+
+export const createOrder = async (req, res) => {};
 
 /**
  * Update a customer
@@ -47,4 +56,36 @@ export const updateCustomer = async (req, res) => {
 	}
 
 	return sendFailure(res, { message: 'No records found!' });
+};
+
+/**
+ * Customer Login
+ * @param {email, phoneNumber, password}
+ * @returns 'Logged In' | 'Invalid credentials'
+ */
+
+export const customerLogin = async (req, res) => {
+	const {
+		body: { email, phoneNumber, password }
+	} = req;
+
+	let result;
+
+	if (email != null) {
+		result = await query('select * from customers where email=?', [email]);
+	} else {
+		result = await query('select * from customers where phoneNumber=?', [phoneNumber]);
+	}
+
+	if (!result.length) return sendFailure(res, { error: 'Invalid Credentials' });
+
+	// const match = await bcrypt.compare(password, result[0].password);
+
+	// if (!match) return sendFailure(res, { error: 'Invalid Credentials' }, StatusCodes.BAD_REQUEST);
+
+	const { id, name } = result[0];
+
+	const token = generateToken({ role: 'customer', id, name });
+
+	return sendSuccess(res, { message: `You're logged in`, token, name });
 };

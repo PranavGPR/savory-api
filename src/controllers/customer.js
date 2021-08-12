@@ -5,14 +5,6 @@ import { query } from 'helpers/dbConnection';
 import { generateToken, sendFailure, sendSuccess } from 'helpers';
 
 /**
- * Create an order
- * @param {}
- * @returns 'Order placed' | 'Error in creating an order'
- */
-
-export const createOrder = async (req, res) => {};
-
-/**
  * Update a customer
  * @param {id, address, city, pincode}
  * @returns 'Successfully Updated' | 'No records found!'
@@ -61,7 +53,7 @@ export const updateCustomer = async (req, res) => {
 /**
  * Customer Login
  * @param {email, phoneNumber, password}
- * @returns 'Logged In' | 'Invalid credentials'
+ * @returns 'Logged In' | 'Email or Password incorrect'
  */
 
 export const customerLogin = async (req, res) => {
@@ -71,17 +63,22 @@ export const customerLogin = async (req, res) => {
 
 	let result;
 
+	if (email == null && phoneNumber == null) {
+		return sendFailure(res, { error: 'Email or Phone Number required' });
+	}
+
 	if (email != null) {
 		result = await query('select * from customers where email=?', [email]);
 	} else {
 		result = await query('select * from customers where phoneNumber=?', [phoneNumber]);
 	}
 
-	if (!result.length) return sendFailure(res, { error: 'Invalid Credentials' });
+	if (!result.length) return sendFailure(res, { error: 'Email or Password incorrect' });
 
 	const match = await bcrypt.compare(password, result[0].password);
 
-	if (!match) return sendFailure(res, { error: 'Invalid Credentials' }, StatusCodes.BAD_REQUEST);
+	if (!match)
+		return sendFailure(res, { error: 'Email or Password incorrect' }, StatusCodes.BAD_REQUEST);
 
 	const { id, name } = result[0];
 

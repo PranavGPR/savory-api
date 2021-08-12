@@ -35,7 +35,7 @@ describe('/admin/', () => {
 			await query('delete from admins');
 		});
 
-		it('should return 400 if some field are missing', async () => {
+		it('should return 404 if some field are missing', async () => {
 			delete payload.email;
 			const res = await exec();
 
@@ -50,6 +50,7 @@ describe('/admin/', () => {
 		});
 
 		it('should return 400 if password is wrong', async () => {
+			id = uuidv4();
 			await query('insert into admins(id,name,password,email) values(?,?,?,?)', [
 				id,
 				'Pranav',
@@ -65,6 +66,7 @@ describe('/admin/', () => {
 		});
 
 		it('should return 200 if data are correct', async () => {
+			id = uuidv4();
 			await query('insert into admins(id,name,password,email) values(?,?,?,?)', [
 				id,
 				'Pranav',

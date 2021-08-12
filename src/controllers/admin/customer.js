@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import { v4 as uuidv4 } from 'uuid';
+import bcrypt from 'bcrypt';
 
 import { query } from 'helpers/dbConnection';
 import { sendFailure, sendSuccess } from 'helpers';
@@ -17,10 +18,12 @@ import { sendFailure, sendSuccess } from 'helpers';
  */
 
 export const createCustomer = async (req, res) => {
-	const { body } = req;
+	let {
+		body: { name, password, phoneNumber, email, address, city, pincode }
+	} = req;
 	const id = uuidv4();
 
-	const { name, password, phoneNumber, email, address, city, pincode } = body;
+	password = await bcrypt.hash(password, 10);
 
 	const result = await query(
 		'insert into customers(id,name,phoneNumber,email,password,address,city,pincode) values(?,?,?,?,?,?,?,?)',

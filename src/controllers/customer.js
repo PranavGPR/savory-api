@@ -79,9 +79,9 @@ export const customerLogin = async (req, res) => {
 
 	if (!result.length) return sendFailure(res, { error: 'Invalid Credentials' });
 
-	// const match = await bcrypt.compare(password, result[0].password);
+	const match = await bcrypt.compare(password, result[0].password);
 
-	// if (!match) return sendFailure(res, { error: 'Invalid Credentials' }, StatusCodes.BAD_REQUEST);
+	if (!match) return sendFailure(res, { error: 'Invalid Credentials' }, StatusCodes.BAD_REQUEST);
 
 	const { id, name } = result[0];
 

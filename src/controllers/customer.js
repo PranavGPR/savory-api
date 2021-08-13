@@ -1,8 +1,30 @@
 import { StatusCodes } from 'http-status-codes';
 import bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
 import { generateToken, sendFailure, sendSuccess } from 'helpers';
+
+/**
+ * Create a order
+ * @param {id, customerid, restaurantid, status, delivered_on, ordered_item, amount, payment_mode}
+ * @returns 'Successfully created an order' | 'Invalid details'
+ */
+
+export const createOrder = async (req, res) => {
+	const { body } = req;
+
+	const id = uuidv4();
+
+	const result = await query(
+		'insert into orders(id, customerid, restaurantid, status,delivered_on, ordered_item, amount, payment_mode) values(?,?,?,?,?,?,?,?)',
+		[id, ...Object.values(body)]
+	);
+
+	if (!result.affectedRows) return sendFailure(res, { error: 'Error in creating an order' });
+
+	return sendSuccess(res, { message: 'Order created' });
+};
 
 /**
  * Update a customer
@@ -14,9 +36,6 @@ export const updateCustomer = async (req, res) => {
 	const {
 		body: { id, address, city, pincode }
 	} = req;
-
-	if (!uuidValidator(id))
-		return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Enter a valid id' });
 
 	if (!address && !city) {
 		const result = await query('update customer set pincode=? where id=?', [pincode, id]);

@@ -1,11 +1,13 @@
 import { Router } from 'express';
 
-import { customerLogin } from 'controllers/customer';
+import { createOrder, customerLogin } from 'controllers/customer';
 import { validateBody } from 'helpers';
-import { customerLoginValidator } from 'validators/customer';
+import { createOrderValidator, customerLoginValidator } from 'validators/customer';
+import { auth, isCustomer, uuidValidator } from 'middlewares';
 
 const router = Router();
 
 router.post('/login', validateBody(customerLoginValidator), customerLogin);
+router.post('/createOrder', auth, isCustomer, validateBody(createOrderValidator), createOrder);
 
 export default router;

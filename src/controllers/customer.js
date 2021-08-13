@@ -45,6 +45,24 @@ export const getAllOrders = async (req, res) => {
 };
 
 /**
+ * Get order details of a particular order
+ * @param {id}
+ * @returns '[orders]' | 'No records found!'
+ */
+
+export const getOrderDetails = async (req, res) => {
+	const {
+		params: { id }
+	} = req;
+
+	const result = await query('select * from orders where id=?', [id]);
+
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
+
+	return sendSuccess(res, { result });
+};
+
+/**
  * Update a customer
  * @param {id, address, city, pincode}
  * @returns 'Successfully Updated' | 'No records found!'

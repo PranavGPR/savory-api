@@ -47,7 +47,7 @@ export const getAllOrders = async (req, res) => {
 /**
  * Get order details of a particular order
  * @param {id}
- * @returns '[orders]' | 'No records found!'
+ * @returns '{order}' | 'No records found!'
  */
 
 export const getOrderDetails = async (req, res) => {

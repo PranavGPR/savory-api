@@ -88,7 +88,7 @@ describe('/customer/', () => {
 			expect(res.body).toHaveProperty('error', 'Enter a valid id');
 		});
 
-		it('should return 404 is customer does not exists', async () => {
+		it('should return 404 if customer does not exists', async () => {
 			id = '77e39eec-a0a4-4efc-a971-bf0a8427aa88';
 
 			const res = await exec();

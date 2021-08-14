@@ -70,7 +70,7 @@ export const createRestaurant = async (req, res) => {
  * @param {}
  * @returns [restaurants] | 'No records found'
  */
-export const getRestaurants = async (req, res) => {
+export const getRestaurants = async (_req, res) => {
 	const result = await query('select * from restaurants');
 
 	if (!result.length) return sendFailure(res, { error: 'No records found' });

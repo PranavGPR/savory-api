@@ -12,7 +12,7 @@ import { sendFailure, sendSuccess } from 'helpers';
  * @param {}
  * @returns [orders] | 'No records found'
  */
-export const getOrders = async (req, res) => {
+export const getOrders = async (_req, res) => {
 	const result = await query('select * from orders');
 
 	if (!result.length) return sendFailure(res, { error: 'No records found' });

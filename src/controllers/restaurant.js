@@ -20,7 +20,7 @@ export const getRestaurant = async (req, res) => {
 
 	if (!result.length) return sendFailure(res, { error: 'No records found' });
 
-	return sendSuccess(res, { result });
+	return sendSuccess(res, { result: result[0] });
 };
 
 /**

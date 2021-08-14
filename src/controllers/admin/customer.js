@@ -40,7 +40,7 @@ export const createCustomer = async (req, res) => {
  * @param {}
  * @returns [customers] | 'No records found'
  */
-export const getCustomers = async (req, res) => {
+export const getCustomers = async (_req, res) => {
 	const result = await query('select * from customers');
 
 	if (!result.length) return sendFailure(res, { error: 'No records found' });

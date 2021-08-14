@@ -42,7 +42,7 @@ export const createAdmin = async (req, res) => {
  * @param {}
  * @returns [admins] | 'No records found'
  */
-export const getAdmins = async (req, res) => {
+export const getAdmins = async (_req, res) => {
 	const result = await query('select * from admins');
 
 	if (!result.length) return sendFailure(res, { error: 'No records found' });

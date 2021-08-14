@@ -4,6 +4,7 @@ import 'regenerator-runtime/runtime';
 import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
+import { generateBearerToken } from './functions';
 
 let server;
 let id;
@@ -100,6 +101,65 @@ describe('/customer/', () => {
 			expect(res.status).toBe(200);
 			expect(res.body).toHaveProperty('token');
 			expect(res.body).toHaveProperty('name');
+		});
+	});
+
+	describe('POST /createOrder', () => {
+		let token;
+		let payload = {
+			customerid: '9629ea6a-2854-4f5c-8501-a67e343837dd',
+			restaurantid: '064aecbc-2704-4fa2-b493-b946841ea29c',
+			status: 'delivered',
+			delivered_on: '08:00:00',
+			ordered_item: JSON.stringify([
+				{ name: 'Idly', quantity: '4' },
+				{ name: 'Dosa', quantity: '1' }
+			])
+		};
+
+		beforeEach(async () => {
+			token = generateBearerToken('customer');
+			await query('insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)', [
+				'9629ea6a-2854-4f5c-8501-a67e343837dd',
+				'Pranav',
+				'9750844039',
+				'pranav@email.com',
+				'Pranav@23'
+			]);
+		});
+
+		afterEach(async () => {
+			await query('delete from orders');
+			await query('delete from customers');
+		});
+
+		const exec = () => {
+			return request(server)
+				.post('/customer/createOrder')
+				.set('Authorization', token)
+				.send(payload);
+		};
+
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
+
+		it('should return 404 if any fields are not provided', async () => {
+			const res = await exec();
+
+			expect(res.status).toBe(404);
+		});
+
+		it('should return 200 if order is created', async () => {
+			payload.payment_mode = 'COD';
+			payload.amount = 200;
+
+			const res = await exec();
+
+			expect(res.status).toBe(200);
 		});
 	});
 });

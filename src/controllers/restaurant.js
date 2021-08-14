@@ -22,3 +22,34 @@ export const getRestaurant = async (req, res) => {
 
 	return sendSuccess(res, { result });
 };
+
+/**
+ * Restaurant Login
+ * @param {email, password}
+ * @returns 'Logged In' | 'Email or Password incorrect'
+ */
+
+export const restaurantLogin = async (req, res) => {
+	const {
+		body: { email, password }
+	} = req;
+
+	if (email == null || password == null) {
+		return sendFailure(res, { error: 'Email or password required' });
+	}
+
+	const result = await query('select * from restaurants where email=?', [email]);
+
+	if (!result.length) return sendFailure(res, { error: 'Email or Password incorrect' });
+
+	const match = await bcrypt.compare(password, result[0].password);
+
+	if (!match)
+		return sendFailure(res, { error: 'Email or Password incorrect' }, StatusCodes.BAD_REQUEST);
+
+	const { id, name } = result[0];
+
+	const token = generateToken({ role: 'restaurant', id, name });
+
+	return sendSuccess(res, { message: `You're logged in`, token, name });
+};

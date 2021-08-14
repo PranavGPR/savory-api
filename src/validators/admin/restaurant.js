@@ -27,7 +27,8 @@ export const createRestaurantValidator = data => {
 			.required(),
 		popular_dishes: Joi.string().required(),
 		people_say: Joi.string().required(),
-		more_info: Joi.string().required()
+		more_info: Joi.string().required(),
+		password: Joi.string().min(8).max(256).required()
 	});
 
 	return schema.validate(data);

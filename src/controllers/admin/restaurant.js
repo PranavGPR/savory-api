@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import { v4 as uuidv4 } from 'uuid';
+import bcrypt from 'bcrypt';
 
 import { query } from 'helpers/dbConnection';
 import { sendFailure, sendSuccess } from 'helpers';
@@ -34,8 +35,12 @@ export const createRestaurant = async (req, res) => {
 		more_info
 	} = body;
 
+	let { password } = body;
+
+	password = await bcrypt.hash(password, 10);
+
 	const result = await query(
-		`insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+		`insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info,password) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
 		[
 			id,
 			'77e39eec-a0a4-4efc-a971-bf0a8427aa88',
@@ -50,7 +55,8 @@ export const createRestaurant = async (req, res) => {
 			closing_time,
 			JSON.stringify(popular_dishes),
 			JSON.stringify(people_say),
-			JSON.stringify(more_info)
+			JSON.stringify(more_info),
+			password
 		]
 	);
 

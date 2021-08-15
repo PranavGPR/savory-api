@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
 import { generateBearerToken } from './functions';
+import { orderValues } from './constants';
 
 let server;
 let id;
@@ -154,19 +155,6 @@ describe('/restaurant/', () => {
 
 		it('should return 200 if orders are found', async () => {
 			id = 'ecd6fdb7-2174-4b8c-9f36-cfc7982d866d';
-
-			let orderValues = {
-				customerid: '9629ea6a-2854-4f5c-8501-a67e343837dd',
-				restaurantid: 'ecd6fdb7-2174-4b8c-9f36-cfc7982d866d',
-				status: 'delivered',
-				delivered_on: '08:00:00',
-				ordered_item: JSON.stringify([
-					{ name: 'Idly', quantity: '4' },
-					{ name: 'Dosa', quantity: '1' }
-				]),
-				amount: 200,
-				payment_mode: 'COD'
-			};
 
 			await query(
 				'insert into orders(id, customerid, restaurantid, status,delivered_on, ordered_item, amount, payment_mode) values(?,?,?,?,?,?,?,?)',

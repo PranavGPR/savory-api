@@ -1,9 +1,48 @@
 import { StatusCodes } from 'http-status-codes';
 import bcrypt from 'bcrypt';
-import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
 import { generateToken, sendFailure, sendSuccess } from 'helpers';
+
+/**
+ * Completed Orders of a restaurant
+ * @param {id}
+ * @returns [orders] | 'No records found'
+ */
+
+export const completedOrders = async (req, res) => {
+	const {
+		params: { id }
+	} = req;
+
+	const result = await query('select * from orders where restaurantid=? and status="delivered"', [
+		id
+	]);
+
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
+
+	return sendSuccess(res, { result });
+};
+
+/**
+ * On Progress orders of a restaurant
+ * @param {id}
+ * @returns [orders] | 'No records found'
+ */
+
+export const OnProgressOrders = async (req, res) => {
+	const {
+		params: { id }
+	} = req;
+
+	const result = await query('select * from orders where restaurantid=? and status="picked up"', [
+		id
+	]);
+
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
+
+	return sendSuccess(res, { result });
+};
 
 /**
  * New orders

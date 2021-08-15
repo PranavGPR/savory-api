@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
 import { generateBearerToken } from './functions';
-import { orderValues, restaurantValues } from './constants';
+import { customerValues, orderValues, restaurantValues } from './constants';
 
 let server;
 let id;
@@ -27,7 +27,7 @@ describe('/customer/', () => {
 
 		beforeEach(() => {
 			payload = {
-				email: 'pranavg@email.com',
+				email: 'pranav@email.com',
 				password: '12345678'
 			};
 		});
@@ -51,16 +51,13 @@ describe('/customer/', () => {
 		});
 
 		it('should return 400 if password is wrong', async () => {
-			id = uuidv4();
-			await query('insert into customers(id,name,phoneNumber,password,email) values(?,?,?,?,?)', [
-				id,
-				'Pranav',
-				'9750844039',
-				'12345678910',
-				'pranavg@email.com'
-			]);
+			await query(
+				'insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)',
+				Object.values(customerValues)
+			);
 
 			payload.password = 'Pranav@23';
+
 			const res = await exec();
 
 			expect(res.status).toBe(400);
@@ -68,13 +65,10 @@ describe('/customer/', () => {
 		});
 
 		it('should return 200 if data are correct', async () => {
-			await query('insert into customers(id,name,phoneNumber,password,email) values(?,?,?,?,?)', [
-				id,
-				'Pranav',
-				'9750844039',
-				'$2b$10$vTkWCMemROvuX639knNLvONS92BAOLaIx76W9GspYkrNISyztqLDy',
-				'pranavg@email.com'
-			]);
+			await query(
+				'insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)',
+				Object.values(customerValues)
+			);
 
 			payload.password = '12345678';
 
@@ -86,13 +80,10 @@ describe('/customer/', () => {
 		});
 
 		it('should return 200 if phoneNumber given is correct', async () => {
-			await query('insert into customers(id,name,phoneNumber,password,email) values(?,?,?,?,?)', [
-				id,
-				'Pranav',
-				'9750844039',
-				'$2b$10$vTkWCMemROvuX639knNLvONS92BAOLaIx76W9GspYkrNISyztqLDy',
-				'pranavg@email.com'
-			]);
+			await query(
+				'insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)',
+				Object.values(customerValues)
+			);
 
 			delete payload.email;
 			payload.phoneNumber = 9750844039;
@@ -126,13 +117,10 @@ describe('/customer/', () => {
 				Object.values(restaurantValues)
 			);
 
-			await query('insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)', [
-				'9629ea6a-2854-4f5c-8501-a67e343837dd',
-				'Pranav',
-				'9750844039',
-				'pranav@email.com',
-				'Pranav@23'
-			]);
+			await query(
+				'insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)',
+				Object.values(customerValues)
+			);
 		});
 
 		afterEach(async () => {
@@ -210,11 +198,12 @@ describe('/customer/', () => {
 		});
 
 		it('should return 200 if customer exists', async () => {
-			id = uuidv4();
 			await query(
-				'insert into customers(id,name,phoneNumber,email,password,address,city,pincode) values(?,?,?,?,?,?,?,?)',
-				[id, 'Pranav', 9750844039, 'pranav123@email.com', '12345678', '', '', '']
+				'insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)',
+				Object.values(customerValues)
 			);
+
+			id = '9629ea6a-2854-4f5c-8501-a67e343837dd';
 
 			const res = await exec();
 
@@ -234,13 +223,10 @@ describe('/customer/', () => {
 				Object.values(restaurantValues)
 			);
 
-			await query('insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)', [
-				'9629ea6a-2854-4f5c-8501-a67e343837dd',
-				'Pranav',
-				'9750844039',
-				'pranav@email.com',
-				'Pranav@23'
-			]);
+			await query(
+				'insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)',
+				Object.values(customerValues)
+			);
 		});
 
 		afterEach(async () => {
@@ -301,13 +287,10 @@ describe('/customer/', () => {
 				Object.values(restaurantValues)
 			);
 
-			await query('insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)', [
-				'9629ea6a-2854-4f5c-8501-a67e343837dd',
-				'Pranav',
-				'9750844039',
-				'pranav@email.com',
-				'Pranav@23'
-			]);
+			await query(
+				'insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)',
+				Object.values(customerValues)
+			);
 		});
 
 		afterEach(async () => {

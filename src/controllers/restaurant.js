@@ -112,7 +112,7 @@ export const restaurantLogin = async (req, res) => {
 	} = req;
 
 	if (email == null || password == null) {
-		return sendFailure(res, { error: 'Email or password required' });
+		return sendFailure(res, { error: 'Email or Password required' });
 	}
 
 	const result = await query('select * from restaurants where email=?', [email]);

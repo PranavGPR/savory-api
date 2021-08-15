@@ -106,6 +106,24 @@ export const updateCustomer = async (req, res) => {
 };
 
 /**
+ * Get a customer
+ * @param {id}
+ * @returns {customer} | 'No records found'
+ */
+
+export const getCustomer = async (req, res) => {
+	const {
+		params: { id }
+	} = req;
+
+	const result = await query('select * from customers where id=?', [id]);
+
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
+
+	return sendSuccess(res, { result: result[0] });
+};
+
+/**
  * Customer Login
  * @param {email, phoneNumber, password}
  * @returns 'Logged In' | 'Email or Password incorrect'

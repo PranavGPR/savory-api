@@ -24,6 +24,24 @@ export const getRestaurant = async (req, res) => {
 };
 
 /**
+ * Get a restaurant's order history
+ * @param {id}
+ * @returns [orders] | 'No records found'
+ */
+
+export const getRestaurantOrders = async (req, res) => {
+	const {
+		params: { id }
+	} = req;
+
+	const result = await query('select * from orders where restaurantid=?', [id]);
+
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
+
+	return sendSuccess(res, { result });
+};
+
+/**
  * Restaurant Login
  * @param {email, password}
  * @returns 'Logged In' | 'Email or Password incorrect'

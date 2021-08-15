@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
 import { generateBearerToken } from './functions';
+import { orderValues, restaurantValues } from './constants';
 
 let server;
 let id;
@@ -108,7 +109,7 @@ describe('/customer/', () => {
 		let token;
 		let payload = {
 			customerid: '9629ea6a-2854-4f5c-8501-a67e343837dd',
-			restaurantid: '064aecbc-2704-4fa2-b493-b946841ea29c',
+			restaurantid: 'ecd6fdb7-2174-4b8c-9f36-cfc7982d866d',
 			status: 'delivered',
 			delivered_on: '08:00:00',
 			ordered_item: JSON.stringify([
@@ -119,6 +120,12 @@ describe('/customer/', () => {
 
 		beforeEach(async () => {
 			token = generateBearerToken('customer');
+
+			await query(
+				'insert into restaurants(id, menuid, name, phoneNumber, email, address, city, pincode, cuisines, opening_time, closing_time, popular_dishes, people_say, more_info, password) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				Object.values(restaurantValues)
+			);
+
 			await query('insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)', [
 				'9629ea6a-2854-4f5c-8501-a67e343837dd',
 				'Pranav',
@@ -131,6 +138,7 @@ describe('/customer/', () => {
 		afterEach(async () => {
 			await query('delete from orders');
 			await query('delete from customers');
+			await query('delete from restaurants');
 		});
 
 		const exec = () => {
@@ -163,12 +171,69 @@ describe('/customer/', () => {
 		});
 	});
 
+	describe('GET /:id', () => {
+		let token;
+
+		beforeEach(() => {
+			id = 'test';
+			token = generateBearerToken('customer');
+		});
+
+		afterEach(async () => {
+			await query('delete from customers');
+		});
+
+		const exec = () => {
+			return request(server).get(`/customer/${id}`).set('Authorization', token);
+		};
+
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
+
+		it('should return 400 if id is not valid', async () => {
+			const res = await exec();
+
+			expect(res.status).toBe(400);
+			expect(res.body).toHaveProperty('error', 'Enter a valid id');
+		});
+
+		it('should return 404 if customer does not exists', async () => {
+			id = '77e39eec-a0a4-4efc-a971-bf0a8427aa88';
+
+			const res = await exec();
+			expect(res.status).toBe(404);
+			expect(res.body).toHaveProperty('error', 'No records found');
+		});
+
+		it('should return 200 if customer exists', async () => {
+			id = uuidv4();
+			await query(
+				'insert into customers(id,name,phoneNumber,email,password,address,city,pincode) values(?,?,?,?,?,?,?,?)',
+				[id, 'Pranav', 9750844039, 'pranav123@email.com', '12345678', '', '', '']
+			);
+
+			const res = await exec();
+
+			expect(res.status).toBe(200);
+		});
+	});
+
 	describe('GET /order/all/:id', () => {
 		let token;
 
 		beforeEach(async () => {
 			id = 'test';
 			token = generateBearerToken('customer');
+
+			await query(
+				'insert into restaurants(id, menuid, name, phoneNumber, email, address, city, pincode, cuisines, opening_time, closing_time, popular_dishes, people_say, more_info, password) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				Object.values(restaurantValues)
+			);
+
 			await query('insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)', [
 				'9629ea6a-2854-4f5c-8501-a67e343837dd',
 				'Pranav',
@@ -181,6 +246,7 @@ describe('/customer/', () => {
 		afterEach(async () => {
 			await query('delete from orders');
 			await query('delete from customers');
+			await query('delete from restaurants');
 		});
 
 		const exec = () => {
@@ -212,22 +278,9 @@ describe('/customer/', () => {
 		it('should return 200 if orders are found', async () => {
 			id = '9629ea6a-2854-4f5c-8501-a67e343837dd';
 
-			let values = {
-				customerid: '9629ea6a-2854-4f5c-8501-a67e343837dd',
-				restaurantid: '064aecbc-2704-4fa2-b493-b946841ea29c',
-				status: 'delivered',
-				delivered_on: '08:00:00',
-				ordered_item: JSON.stringify([
-					{ name: 'Idly', quantity: '4' },
-					{ name: 'Dosa', quantity: '1' }
-				]),
-				amount: 200,
-				payment_mode: 'COD'
-			};
-
 			await query(
 				'insert into orders(id, customerid, restaurantid, status,delivered_on, ordered_item, amount, payment_mode) values(?,?,?,?,?,?,?,?)',
-				[id, ...Object.values(values)]
+				[id, ...Object.values(orderValues)]
 			);
 
 			const res = await exec();
@@ -242,6 +295,12 @@ describe('/customer/', () => {
 		beforeEach(async () => {
 			id = test;
 			token = generateBearerToken('customer');
+
+			await query(
+				'insert into restaurants(id, menuid, name, phoneNumber, email, address, city, pincode, cuisines, opening_time, closing_time, popular_dishes, people_say, more_info, password) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				Object.values(restaurantValues)
+			);
+
 			await query('insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)', [
 				'9629ea6a-2854-4f5c-8501-a67e343837dd',
 				'Pranav',
@@ -254,6 +313,7 @@ describe('/customer/', () => {
 		afterEach(async () => {
 			await query('delete from orders');
 			await query('delete from customers');
+			await query('delete from restaurants');
 		});
 
 		const exec = () => {
@@ -285,22 +345,9 @@ describe('/customer/', () => {
 		it('should return 200 if order exists', async () => {
 			id = uuidv4();
 
-			let values = {
-				customerid: '9629ea6a-2854-4f5c-8501-a67e343837dd',
-				restaurantid: '064aecbc-2704-4fa2-b493-b946841ea29c',
-				status: 'delivered',
-				delivered_on: '08:00:00',
-				ordered_item: JSON.stringify([
-					{ name: 'Idly', quantity: '4' },
-					{ name: 'Dosa', quantity: '1' }
-				]),
-				amount: 200,
-				payment_mode: 'COD'
-			};
-
 			await query(
 				'insert into orders(id, customerid, restaurantid, status,delivered_on, ordered_item, amount, payment_mode) values(?,?,?,?,?,?,?,?)',
-				[id, ...Object.values(values)]
+				[id, ...Object.values(orderValues)]
 			);
 		});
 	});

@@ -1,7 +1,6 @@
 import request from 'supertest';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
 import { generateBearerToken } from './functions';
@@ -140,6 +139,58 @@ describe('/restaurant/', () => {
 				'insert into orders(id, customerid, restaurantid, status,delivered_on, ordered_item, amount, payment_mode) values(?,?,?,?,?,?,?,?)',
 				[id, ...Object.values(orderValues)]
 			);
+
+			const res = await exec();
+
+			expect(res.status).toBe(200);
+		});
+	});
+
+	describe('GET /:id', () => {
+		let token;
+
+		beforeEach(() => {
+			id = 'test';
+			token = generateBearerToken('restaurant');
+		});
+
+		afterEach(async () => {
+			await query('delete from restaurants');
+		});
+
+		const exec = () => {
+			return request(server).get(`/restaurant/${id}`).set('Authorization', token);
+		};
+
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
+
+		it('should return 400 if id is not valid', async () => {
+			const res = await exec();
+
+			expect(res.status).toBe(400);
+			expect(res.body).toHaveProperty('error', 'Enter a valid id');
+		});
+
+		it('should return 404 if restaurant does not exists', async () => {
+			id = '77e39eec-a0a4-4efc-a971-bf0a8427aa88';
+
+			const res = await exec();
+			expect(res.status).toBe(404);
+			expect(res.body).toHaveProperty('error', 'No records found');
+		});
+
+		it('should return 200 if restaurant exists', async () => {
+			await query(
+				'insert into restaurants(id, menuid, name, phoneNumber, email, address, city, pincode, cuisines, opening_time, closing_time, popular_dishes, people_say, more_info, password) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				Object.values(restaurantValues)
+			);
+
+			id = 'ecd6fdb7-2174-4b8c-9f36-cfc7982d866d';
 
 			const res = await exec();
 

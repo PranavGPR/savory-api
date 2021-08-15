@@ -17,8 +17,8 @@ const router = Router();
 router.post('/login', validateBody(restaurantLoginValidator), restaurantLogin);
 router.get('/order/:id', auth, isRestaurant, uuidValidator, getRestaurantOrders);
 router.get('/newOrder/:id', auth, isRestaurant, uuidValidator, newOrders);
-router.get('/completedOrders/:id', auth, isRestaurant, uuidValidator, completedOrders);
-router.get('/onProgressOrders/:id', auth, isRestaurant, uuidValidator, OnProgressOrders);
+router.get('/completedOrder/:id', auth, isRestaurant, uuidValidator, completedOrders);
+router.get('/onProgressOrder/:id', auth, isRestaurant, uuidValidator, OnProgressOrders);
 router.get('/:id', auth, isRestaurant, uuidValidator, getRestaurant);
 
 export default router;

@@ -6,6 +6,26 @@ import { query } from 'helpers/dbConnection';
 import { generateToken, sendFailure, sendSuccess } from 'helpers';
 
 /**
+ * New orders
+ * @param {id}
+ * @returns [orders] | 'No records found'
+ */
+
+export const newOrders = async (req, res) => {
+	const {
+		params: { id }
+	} = req;
+
+	const result = await query('select * from orders where restaurantid=? and status="ordered"', [
+		id
+	]);
+
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
+
+	return sendSuccess(res, { result });
+};
+
+/**
  * Get a restaurant
  * @param {id}
  * @returns {restaurant} | 'No records found'

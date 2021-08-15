@@ -28,3 +28,11 @@ export const orderValues = {
 	amount: 200,
 	payment_mode: 'COD'
 };
+
+export const customerValues = {
+	id: '9629ea6a-2854-4f5c-8501-a67e343837dd',
+	name: 'Pranav',
+	phoneNumber: '9750844039',
+	email: 'pranav@email.com',
+	password: '$2b$10$vTkWCMemROvuX639knNLvONS92BAOLaIx76W9GspYkrNISyztqLDy'
+};

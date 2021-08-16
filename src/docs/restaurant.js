@@ -8,7 +8,7 @@ const { swagger: loginSchema } = j2s(restaurantLoginSchema);
 export default {
 	'/restaurant/login': {
 		post: {
-			tags: ['restaurant'],
+			tags: ['Restaurant'],
 			summary: 'Login as restaurant',
 			description: 'Login to the server as a restaurant to manage orders.',
 			responses: {
@@ -39,7 +39,7 @@ export default {
 	},
 	'/restaurant/{id}': {
 		get: {
-			tags: ['restaurant'],
+			tags: ['Restaurant'],
 			summary: 'Get details of a restaurant',
 			description: 'After logging in, get the details of a restaurant with its id',
 			responses: {
@@ -76,7 +76,7 @@ export default {
 	},
 	'/restaurant/order/{id}': {
 		get: {
-			tags: ['restaurant'],
+			tags: ['Restaurant'],
 			summary: 'Get all order details of a restaurant',
 			description: 'After logging in, get the details of all orders of a restaurant with its id',
 			responses: {
@@ -113,7 +113,7 @@ export default {
 	},
 	'/restaurant/newOrder/{id}': {
 		get: {
-			tags: ['restaurant'],
+			tags: ['Restaurant'],
 			summary: 'Get all new order details of a restaurant',
 			description:
 				'After logging in, get the details of all new orders of a restaurant with its id',
@@ -151,7 +151,7 @@ export default {
 	},
 	'/restaurant/onProgressOrder/{id}': {
 		get: {
-			tags: ['restaurant'],
+			tags: ['Restaurant'],
 			summary: 'Get all on progress order details of a restaurant',
 			description:
 				'After logging in, get the details of all on progress orders of a restaurant with its id',
@@ -189,7 +189,7 @@ export default {
 	},
 	'/restaurant/completedOrder/{id}': {
 		get: {
-			tags: ['restaurant'],
+			tags: ['Restaurant'],
 			summary: 'Get all completed order details of a restaurant',
 			description:
 				'After logging in, get the details of all completed orders of a restaurant with its id',

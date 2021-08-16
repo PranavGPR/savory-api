@@ -1,7 +1,7 @@
 export default {
 	'/': {
 		get: {
-			tags: ['ping'],
+			tags: ['Ping'],
 			summary: 'Ping the server',
 			description: 'Ping the server',
 			responses: {

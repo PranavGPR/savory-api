@@ -50,6 +50,9 @@ export default {
 				400: {
 					description: 'Enter a valid id'
 				},
+				401: {
+					description: 'Access Denied'
+				},
 				404: {
 					description: 'No records found'
 				},
@@ -86,6 +89,9 @@ export default {
 				},
 				400: {
 					description: 'Enter a valid id'
+				},
+				401: {
+					description: 'Access Denied'
 				},
 				404: {
 					description: 'No records found'
@@ -125,6 +131,9 @@ export default {
 				400: {
 					description: 'Enter a valid id'
 				},
+				401: {
+					description: 'Access Denied'
+				},
 				404: {
 					description: 'No records found'
 				},
@@ -163,6 +172,9 @@ export default {
 				400: {
 					description: 'Enter a valid id'
 				},
+				401: {
+					description: 'Access Denied'
+				},
 				404: {
 					description: 'No records found'
 				},
@@ -200,6 +212,9 @@ export default {
 				},
 				400: {
 					description: 'Enter a valid id'
+				},
+				401: {
+					description: 'Access Denied'
 				},
 				404: {
 					description: 'No records found'

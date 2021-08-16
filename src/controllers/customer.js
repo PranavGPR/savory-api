@@ -55,7 +55,7 @@ export const getOrderDetails = async (req, res) => {
 		params: { id }
 	} = req;
 
-	const result = await query('select * from orders where id=?', [id]);
+	const result = await query('select * from orders where id=? and customerid=?', [id, req.user.id]);
 
 	if (!result.length) return sendFailure(res, { error: 'No records found' });
 

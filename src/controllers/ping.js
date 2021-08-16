@@ -1,5 +1,4 @@
-import { query } from 'helpers/dbConnection';
-import { sendFailure, sendSuccess } from 'helpers';
+import { sendSuccess } from 'helpers';
 
 /**
  * Controllers for all /ping routes
@@ -14,11 +13,7 @@ export async function basePing(_req, res) {
 	 * @returns Status `200`
 	 */
 
-	const result = await query('SELECT * from customers');
-
-	if (!result.length) return sendFailure(res, { error: 'No records found' });
-
-	return sendSuccess(res, { result });
+	return sendSuccess(res, { message: 'Ping...' });
 }
 
 export default { basePing };

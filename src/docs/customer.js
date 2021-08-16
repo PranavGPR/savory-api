@@ -118,5 +118,42 @@ export default {
 				}
 			]
 		}
+	},
+	'/customer/order/{id}': {
+		get: {
+			tags: ['Customer'],
+			summary: 'Get an order details of a customer',
+			description: 'After logging in, get the details of an order of a customer with its id',
+			responses: {
+				200: {
+					description: 'Details of the orders',
+					content: 'application/json'
+				},
+				400: {
+					description: 'Enter a valid id'
+				},
+				404: {
+					description: 'No records found'
+				},
+				500: {
+					description: 'Internal Server error'
+				}
+			},
+			parameters: [
+				{
+					in: 'path',
+					name: 'id',
+					description: 'ID of the order needed to get details of that order',
+					required: true
+				},
+				{
+					in: 'header',
+					name: 'Authorization',
+					description: 'Token for authorization',
+					required: true,
+					type: 'string'
+				}
+			]
+		}
 	}
 };

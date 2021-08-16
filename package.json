@@ -19,7 +19,7 @@
 	],
 	"author": "PranavGPR",
 	"license": "ISC",
-	"description": "The API repo for Savory",
+	"description": "REST API repo for Savory",
 	"dependencies": {
 		"bcrypt": "^5.0.1",
 		"core-js": "^3.14.0",
@@ -31,9 +31,11 @@
 		"helmet": "^4.6.0",
 		"http-status-codes": "^2.1.4",
 		"joi": "^17.4.0",
+		"joi-to-swagger": "^6.0.1",
 		"jsonwebtoken": "^8.5.1",
 		"mysql2": "^2.2.5",
 		"regenerator-runtime": "^0.13.7",
+		"swagger-ui-express": "^4.1.6",
 		"uuid": "^8.3.2",
 		"winston": "^3.3.3"
 	},

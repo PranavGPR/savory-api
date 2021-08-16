@@ -1,4 +1,4 @@
 export const restaurantLoginExample = {
-	email: 'restaurant1@email.com',
+	email: 'restaurant2@email.com',
 	password: '12345678'
 };

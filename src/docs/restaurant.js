@@ -18,6 +18,9 @@ export default {
 				},
 				404: {
 					description: 'No records found'
+				},
+				500: {
+					description: 'Internal Server error'
 				}
 			},
 			parameters: [
@@ -30,6 +33,43 @@ export default {
 						...loginSchema,
 						example: restaurantLoginExample
 					}
+				}
+			]
+		}
+	},
+	'/restaurant/{id}': {
+		get: {
+			tags: ['restaurant'],
+			summary: 'Get details of a restaurant',
+			description: 'After logging in, get the details of a restaurant with its id',
+			responses: {
+				200: {
+					description: 'Details of the restaurant',
+					content: 'application/json'
+				},
+				400: {
+					description: 'Enter a valid id'
+				},
+				404: {
+					description: 'No records found'
+				},
+				500: {
+					description: 'Internal Server error'
+				}
+			},
+			parameters: [
+				{
+					in: 'path',
+					name: 'id',
+					description: 'ID needed to get details of a restaurant',
+					required: true
+				},
+				{
+					in: 'header',
+					name: 'Authorization',
+					description: 'Token for authorization',
+					required: true,
+					type: 'string'
 				}
 			]
 		}

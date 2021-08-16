@@ -148,5 +148,43 @@ export default {
 				}
 			]
 		}
+	},
+	'/restaurant/onProgressOrder/{id}': {
+		get: {
+			tags: ['restaurant'],
+			summary: 'Get all on progress order details of a restaurant',
+			description:
+				'After logging in, get the details of all on progress orders of a restaurant with its id',
+			responses: {
+				200: {
+					description: 'Details of all on progress orders',
+					content: 'application/json'
+				},
+				400: {
+					description: 'Enter a valid id'
+				},
+				404: {
+					description: 'No records found'
+				},
+				500: {
+					description: 'Internal Server error'
+				}
+			},
+			parameters: [
+				{
+					in: 'path',
+					name: 'id',
+					description: 'ID of the restaurant needed to get details of on progress all orders',
+					required: true
+				},
+				{
+					in: 'header',
+					name: 'Authorization',
+					description: 'Token for authorization',
+					required: true,
+					type: 'string'
+				}
+			]
+		}
 	}
 };

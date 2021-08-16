@@ -5,7 +5,7 @@ import 'dotenv/config';
 import cors from 'cors';
 
 import logger from 'tools/logger';
-import { registerLogging, registerPreprocessor, registerRouters } from 'tools';
+import { registerLogging, registerPreprocessor, registerRouters, setupDocs } from 'tools';
 
 const { PORT } = process.env;
 
@@ -15,6 +15,7 @@ app.use(express.json());
 registerLogging(app);
 registerPreprocessor(app);
 registerRouters(app);
+setupDocs(app);
 
 const server = app.listen(PORT);
 

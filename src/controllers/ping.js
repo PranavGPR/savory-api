@@ -1,6 +1,5 @@
-import { StatusCodes } from 'http-status-codes';
-
-import connection from 'helpers/dbConnection';
+import { query } from 'helpers/dbConnection';
+import { sendFailure, sendSuccess } from 'helpers';
 
 /**
  * Controllers for all /ping routes
@@ -8,19 +7,18 @@ import connection from 'helpers/dbConnection';
  * Available controllers: basePing
  */
 
-export function basePing(_req, res) {
+export async function basePing(_req, res) {
 	/**
 	 * Ping the server
 	 * @param {}
 	 * @returns Status `200`
 	 */
 
-	connection.query('SELECT * from student', function (error, results, fields) {
-		if (error) throw error;
-		res.status(StatusCodes.OK).json({ message: results });
-	});
+	const result = await query('SELECT * from customers');
 
-	connection.end();
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
+
+	return sendSuccess(res, { result });
 }
 
 export default { basePing };

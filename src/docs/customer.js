@@ -1,7 +1,7 @@
 import j2s from 'joi-to-swagger';
 
 import { createOrderSchema, customerLoginSchema } from 'validators/customer';
-import { customerLoginExample } from 'constants/customer';
+import { createOrderExample, customerLoginExample } from 'constants/customer';
 
 const { swagger: createOrderSwagger } = j2s(createOrderSchema);
 const { swagger: customerLoginSwagger } = j2s(customerLoginSchema);
@@ -64,6 +64,50 @@ export default {
 					name: 'id',
 					description: 'ID needed to get details of a customer',
 					required: true
+				},
+				{
+					in: 'header',
+					name: 'Authorization',
+					description: 'Token for authorization',
+					required: true,
+					type: 'string'
+				}
+			]
+		}
+	},
+	'/customer/createOrder': {
+		post: {
+			tags: ['Customer'],
+			summary: 'Create an order',
+			description: 'Order a food as a customer',
+			responses: {
+				200: {
+					description: 'Order placed',
+					content: 'application/json'
+				},
+				400: {
+					description: 'Enter required details'
+				},
+				401: {
+					description: 'Access Denied'
+				},
+				404: {
+					description: 'Error in creating an order'
+				},
+				500: {
+					description: 'Internal Server error'
+				}
+			},
+			parameters: [
+				{
+					in: 'body',
+					name: 'body',
+					description: 'Details needed to login as a customer',
+					required: true,
+					schema: {
+						...createOrderSwagger,
+						example: createOrderExample
+					}
 				},
 				{
 					in: 'header',

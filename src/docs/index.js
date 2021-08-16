@@ -1,3 +1,4 @@
 import pingDocs from './ping';
+import restaurantDocs from './restaurant';
 
-export default { ...pingDocs };
+export default { ...pingDocs, ...restaurantDocs };

@@ -13,7 +13,8 @@ export const createAdminValidator = data => {
 };
 
 export const updateAdminSchema = Joi.object({
-	name: Joi.string().required()
+	name: Joi.string(),
+	email: Joi.string().email({ tlds: { allow: false } })
 });
 
 export const updateAdminValidator = data => {

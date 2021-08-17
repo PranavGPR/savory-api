@@ -272,5 +272,55 @@ export default {
 				}
 			]
 		}
+	},
+	'/admin/password/{id}': {
+		put: {
+			tags: ['Admin'],
+			summary: 'Update password of admin',
+			description: 'After logging in, update the password of an admin',
+			responses: {
+				200: {
+					description: 'Successfully updated',
+					content: 'application/json'
+				},
+				400: {
+					description: 'Enter a valid id' || 'Incorrect Password'
+				},
+				401: {
+					description: 'Access Denied'
+				},
+				404: {
+					description: 'No records found'
+				},
+				500: {
+					description: 'Internal Server error'
+				}
+			},
+			parameters: [
+				{
+					in: 'header',
+					name: 'Authorization',
+					description: 'Token for authorization',
+					required: true,
+					type: 'string'
+				},
+				{
+					in: 'body',
+					name: 'body',
+					description: 'Details needed to update an admin',
+					required: true,
+					schema: {
+						...updateAdminSwagger,
+						example: updateAdminExample
+					}
+				},
+				{
+					in: 'path',
+					name: 'id',
+					description: 'ID of the admin needed to update their details',
+					required: true
+				}
+			]
+		}
 	}
 };

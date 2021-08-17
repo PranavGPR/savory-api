@@ -13,7 +13,7 @@ export async function basePing(_req, res) {
 	 * @returns Status `200`
 	 */
 
-	return sendSuccess(res, { message: 'Ping...' });
+	return sendSuccess(res, { message: 'Pong...' });
 }
 
 export default { basePing };

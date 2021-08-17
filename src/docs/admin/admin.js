@@ -29,11 +29,51 @@ export default {
 				{
 					in: 'body',
 					name: 'body',
-					description: 'Details needed to login as a admin',
+					description: 'Details needed to login as an admin',
 					required: true,
 					schema: {
 						...adminLoginSwagger,
 						example: adminLoginExample
+					}
+				}
+			]
+		}
+	},
+	'/admin/create': {
+		post: {
+			tags: ['Admin'],
+			summary: 'Create an admin',
+			description: 'Create other admins after logging in as an admin',
+			responses: {
+				200: {
+					description: `You're logged in`,
+					content: 'application/json'
+				},
+				400: {
+					description: 'Error in inserting the values'
+				},
+				401: {
+					description: 'Access denied'
+				},
+				500: {
+					description: 'Internal Server error'
+				}
+			},
+			parameters: [
+				{
+					in: 'path',
+					name: 'token',
+					description: 'Token for Authorization',
+					required: true
+				},
+				{
+					in: 'body',
+					name: 'body',
+					description: 'Details needed to create an admin',
+					required: true,
+					schema: {
+						...createAdminSwagger,
+						example: createAdminExample
 					}
 				}
 			]

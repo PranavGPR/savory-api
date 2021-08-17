@@ -80,5 +80,39 @@ export default {
 				}
 			]
 		}
+	},
+	'/admin/customer/count': {
+		get: {
+			tags: ['Admin/Customer'],
+			summary: 'Get customers count',
+			description: 'After logging in, get customers count',
+			responses: {
+				200: {
+					description: 'Details of the customers',
+					content: 'application/json'
+				},
+				400: {
+					description: 'Enter a valid id'
+				},
+				401: {
+					description: 'Access Denied'
+				},
+				404: {
+					description: 'No records found'
+				},
+				500: {
+					description: 'Internal Server error'
+				}
+			},
+			parameters: [
+				{
+					in: 'header',
+					name: 'Authorization',
+					description: 'Token for authorization',
+					required: true,
+					type: 'string'
+				}
+			]
+		}
 	}
 };

@@ -115,7 +115,7 @@ export const updateCustomer = async (req, res) => {
  *
  */
 
-export const getCustomersCount = async (req, res) => {
+export const getCustomersCount = async (_req, res) => {
 	const result = await query('select count(name) from customers');
 
 	const countValue = Object.values(result[0])[0];

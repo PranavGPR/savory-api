@@ -199,8 +199,8 @@ export default {
 		},
 		put: {
 			tags: ['Admin'],
-			summary: 'Update name of admin',
-			description: 'After logging in, update the details of an admin',
+			summary: 'Update name and email of admin',
+			description: 'After logging in, update name and email of an admin',
 			responses: {
 				200: {
 					description: 'Successfully updated',
@@ -230,7 +230,7 @@ export default {
 				{
 					in: 'body',
 					name: 'body',
-					description: 'Details needed to update an admin',
+					description: 'The name and email needed to update an admin',
 					required: true,
 					schema: {
 						...updateAdminSwagger,
@@ -240,7 +240,7 @@ export default {
 				{
 					in: 'path',
 					name: 'id',
-					description: 'ID of the admin needed to update their details',
+					description: 'ID of the admin needed to update their name and email',
 					required: true
 				}
 			]

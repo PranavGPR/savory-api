@@ -1,11 +1,11 @@
 import Joi from 'joi';
 
-export const updateOrderValidator = data => {
-	const schema = Joi.object({
-		status: Joi.string(),
-		payment_mode: Joi.string(),
-		delivered_on: Joi.date()
-	});
+export const updateOrderSchema = Joi.object({
+	status: Joi.string(),
+	payment_mode: Joi.string(),
+	delivered_on: Joi.date()
+});
 
-	return schema.validate(data);
+export const updateOrderValidator = data => {
+	return updateOrderSchema.validate(data);
 };

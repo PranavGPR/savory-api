@@ -66,6 +66,26 @@ export const getAdminById = async (req, res) => {
 };
 
 /**
+ *
+ * Get count of admins
+ *
+ * @route: /admin/count
+ * @method: GET
+ * @returns: {count(admins)}
+ *
+ */
+
+export const getAdminsCount = async (_req, res) => {
+	const result = await query('select count(name) from admins');
+
+	const countValue = Object.values(result[0])[0];
+
+	if (!countValue) return sendFailure(res, { error: 'No records found' });
+
+	return sendSuccess(res, { result: countValue });
+};
+
+/**
  * Delete an admin
  * @param {id}
  * @returns 'Admin Deleted' | 'No records found'

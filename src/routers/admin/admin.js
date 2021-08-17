@@ -6,6 +6,7 @@ import {
 	deleteAdmin,
 	getAdminById,
 	getAdmins,
+	getAdminsCount,
 	updateAdmin
 } from 'controllers/admin';
 import { auth, isAdmin, uuidValidator } from 'middlewares';
@@ -17,6 +18,7 @@ const router = Router();
 router.post('/login', validateBody(adminLoginValidator), adminLogin);
 router.post('/create', auth, isAdmin, validateBody(createAdminValidator), createAdmin);
 router.get('/all', auth, isAdmin, getAdmins);
+router.get('/count', auth, isAdmin, getAdminsCount);
 router.put('/:id', auth, isAdmin, uuidValidator, validateBody(updateAdminValidator), updateAdmin);
 router.delete('/:id', auth, isAdmin, uuidValidator, deleteAdmin);
 router.get('/:id', auth, isAdmin, uuidValidator, getAdminById);

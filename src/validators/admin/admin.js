@@ -20,6 +20,15 @@ export const updateAdminValidator = data => {
 	return updateAdminSchema.validate(data);
 };
 
+export const updateAdminPasswordSchema = Joi.object({
+	currentPassword: Joi.string().required(),
+	newPassword: Joi.string().required()
+});
+
+export const updateAdminPasswordValidator = data => {
+	return updateAdminPasswordSchema.validate(data);
+};
+
 export const adminLoginSchema = Joi.object({
 	email: Joi.string()
 		.email({ tlds: { allow: false } })

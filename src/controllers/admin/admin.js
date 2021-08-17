@@ -128,7 +128,7 @@ export const updateAdmin = async (req, res) => {
 
 export const updateAdminPassword = async (req, res) => {
 	const { id } = req.params;
-	const {
+	let {
 		body: { currentPassword, newPassword }
 	} = req;
 

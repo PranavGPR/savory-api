@@ -78,6 +78,54 @@ export default {
 					type: 'string'
 				}
 			]
+		},
+		put: {
+			tags: ['Admin/Order'],
+			summary: 'Update order details',
+			description: 'After logging in, update the details of a order',
+			responses: {
+				200: {
+					description: 'Successfully updated',
+					content: 'application/json'
+				},
+				400: {
+					description: 'Enter a valid id'
+				},
+				401: {
+					description: 'Access Denied'
+				},
+				404: {
+					description: 'No records found'
+				},
+				500: {
+					description: 'Internal Server error'
+				}
+			},
+			parameters: [
+				{
+					in: 'header',
+					name: 'Authorization',
+					description: 'Token for authorization',
+					required: true,
+					type: 'string'
+				},
+				{
+					in: 'body',
+					name: 'body',
+					description: 'Details needed to update an admin',
+					required: true,
+					schema: {
+						...updateOrderSwagger,
+						example: updateOrderExample
+					}
+				},
+				{
+					in: 'path',
+					name: 'id',
+					description: 'ID of the order needed to update details',
+					required: true
+				}
+			]
 		}
 	}
 };

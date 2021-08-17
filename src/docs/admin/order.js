@@ -39,5 +39,45 @@ export default {
 				}
 			]
 		}
+	},
+	'/admin/order/{id}': {
+		get: {
+			tags: ['Admin/Order'],
+			summary: 'Get a order',
+			description: 'Get details of a order by their id',
+			responses: {
+				200: {
+					description: 'Details of a order',
+					content: 'application/json'
+				},
+				400: {
+					description: 'Enter a valid id'
+				},
+				401: {
+					description: 'Access Denied'
+				},
+				404: {
+					description: 'No records found'
+				},
+				500: {
+					description: 'Internal Server error'
+				}
+			},
+			parameters: [
+				{
+					in: 'path',
+					name: 'id',
+					description: 'ID of the order needed to get details',
+					required: true
+				},
+				{
+					in: 'header',
+					name: 'Authorization',
+					description: 'Token for authorization',
+					required: true,
+					type: 'string'
+				}
+			]
+		}
 	}
 };

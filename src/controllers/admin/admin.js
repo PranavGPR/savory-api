@@ -121,6 +121,35 @@ export const updateAdmin = async (req, res) => {
 };
 
 /**
+ * Update an admin's password
+ * @param {id, password}
+ * @returns 'Admin's password updated' | 'No records found'
+ */
+
+export const updateAdminPassword = async (req, res) => {
+	const { id } = req.params;
+	const {
+		body: { currentPassword, newPassword }
+	} = req;
+
+	const result = await query('select * from admins where id=?', [id]);
+
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
+
+	const match = await bcrypt.compare(currentPassword, result[0].password);
+
+	if (!match) return sendFailure(res, { error: 'Incorrect Password' }, StatusCodes.BAD_REQUEST);
+
+	newPassword = await bcrypt.hash(newPassword, 10);
+
+	const updateResult = await query(`update admins set password=? where id=?`, [newPassword, id]);
+
+	if (updateResult.affectedRows) return sendSuccess(res, { message: 'Successfully updated' });
+
+	return sendFailure(res, { error: 'No records found' });
+};
+
+/**
  *
  * Admin Login
  *

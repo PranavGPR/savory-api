@@ -12,3 +12,8 @@ export const createAdminExample = {
 export const updateAdminExample = {
 	name: 'Pranav'
 };
+
+export const updateAdminPasswordExample = {
+	currentPassword: '12345678',
+	newPassword: 'Pranav@23'
+};

@@ -1,11 +1,22 @@
 import j2s from 'joi-to-swagger';
 
-import { adminLoginSchema, createAdminSchema, updateAdminSchema } from 'validators/admin';
-import { adminLoginExample, createAdminExample, updateAdminExample } from 'constants/admin';
+import {
+	adminLoginSchema,
+	createAdminSchema,
+	updateAdminSchema,
+	updateAdminPasswordSchema
+} from 'validators/admin';
+import {
+	adminLoginExample,
+	createAdminExample,
+	updateAdminExample,
+	updateAdminPasswordExample
+} from 'constants/admin';
 
 const { swagger: adminLoginSwagger } = j2s(adminLoginSchema);
 const { swagger: createAdminSwagger } = j2s(createAdminSchema);
 const { swagger: updateAdminSwagger } = j2s(updateAdminSchema);
+const { swagger: updateAdminPasswordSwagger } = j2s(updateAdminPasswordSchema);
 
 export default {
 	'/admin/login': {
@@ -284,7 +295,7 @@ export default {
 					content: 'application/json'
 				},
 				400: {
-					description: 'Enter a valid id' || 'Incorrect Password'
+					description: 'Enter a valid id (or) Incorrect Password'
 				},
 				401: {
 					description: 'Access Denied'
@@ -310,8 +321,8 @@ export default {
 					description: 'Details needed to update an admin',
 					required: true,
 					schema: {
-						...updateAdminSwagger,
-						example: updateAdminExample
+						...updateAdminPasswordSwagger,
+						example: updateAdminPasswordExample
 					}
 				},
 				{

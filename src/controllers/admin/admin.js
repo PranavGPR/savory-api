@@ -103,19 +103,54 @@ export const deleteAdmin = async (req, res) => {
 
 /**
  * Update an admin
- * @param {id, name}
+ * @param {id, name, email}
  * @returns 'Admin Updated' | 'No records found'
  */
 
 export const updateAdmin = async (req, res) => {
 	const { id } = req.params;
-	const {
-		body: { name }
-	} = req;
+	const { body } = req;
 
-	const result = await query(`update admins set name=? where id=?`, [name, id]);
+	let fields = '';
+	Object.keys(body).forEach((val, ind) => {
+		fields += ind + 1 === Object.keys(body).length ? `${val}=?` : `${val}=?,`;
+	});
+
+	let objValues = Object.values(body);
+	objValues.push(id);
+
+	const result = await query(`update admins set ${fields} where id=?`, objValues);
 
 	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated' });
+
+	return sendFailure(res, { error: 'No records found' });
+};
+
+/**
+ * Update an admin's password
+ * @param {id, password}
+ * @returns 'Admin's password updated' | 'No records found'
+ */
+
+export const updateAdminPassword = async (req, res) => {
+	const { id } = req.params;
+	let {
+		body: { currentPassword, newPassword }
+	} = req;
+
+	const result = await query('select * from admins where id=?', [id]);
+
+	if (!result.length) return sendFailure(res, { error: 'No records found' });
+
+	const match = await bcrypt.compare(currentPassword, result[0].password);
+
+	if (!match) return sendFailure(res, { error: 'Incorrect Password' }, StatusCodes.BAD_REQUEST);
+
+	newPassword = await bcrypt.hash(newPassword, 10);
+
+	const updateResult = await query(`update admins set password=? where id=?`, [newPassword, id]);
+
+	if (updateResult.affectedRows) return sendSuccess(res, { message: 'Successfully updated' });
 
 	return sendFailure(res, { error: 'No records found' });
 };

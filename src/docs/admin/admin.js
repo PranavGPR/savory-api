@@ -1,11 +1,22 @@
 import j2s from 'joi-to-swagger';
 
-import { adminLoginSchema, createAdminSchema, updateAdminSchema } from 'validators/admin';
-import { adminLoginExample, createAdminExample, updateAdminExample } from 'constants/admin';
+import {
+	adminLoginSchema,
+	createAdminSchema,
+	updateAdminSchema,
+	updateAdminPasswordSchema
+} from 'validators/admin';
+import {
+	adminLoginExample,
+	createAdminExample,
+	updateAdminExample,
+	updateAdminPasswordExample
+} from 'constants/admin';
 
 const { swagger: adminLoginSwagger } = j2s(adminLoginSchema);
 const { swagger: createAdminSwagger } = j2s(createAdminSchema);
 const { swagger: updateAdminSwagger } = j2s(updateAdminSchema);
+const { swagger: updateAdminPasswordSwagger } = j2s(updateAdminPasswordSchema);
 
 export default {
 	'/admin/login': {
@@ -188,8 +199,8 @@ export default {
 		},
 		put: {
 			tags: ['Admin'],
-			summary: 'Update name of admin',
-			description: 'After logging in, update the details of an admin',
+			summary: 'Update name and email of admin',
+			description: 'After logging in, update name and email of an admin',
 			responses: {
 				200: {
 					description: 'Successfully updated',
@@ -219,7 +230,7 @@ export default {
 				{
 					in: 'body',
 					name: 'body',
-					description: 'Details needed to update an admin',
+					description: 'The name and email needed to update an admin',
 					required: true,
 					schema: {
 						...updateAdminSwagger,
@@ -229,7 +240,7 @@ export default {
 				{
 					in: 'path',
 					name: 'id',
-					description: 'ID of the admin needed to update their details',
+					description: 'ID of the admin needed to update their name and email',
 					required: true
 				}
 			]
@@ -268,6 +279,56 @@ export default {
 					in: 'path',
 					name: 'id',
 					description: 'ID of the admin needed to delete that admin',
+					required: true
+				}
+			]
+		}
+	},
+	'/admin/password/{id}': {
+		put: {
+			tags: ['Admin'],
+			summary: 'Update password of admin',
+			description: 'After logging in, update the password of an admin',
+			responses: {
+				200: {
+					description: 'Successfully updated',
+					content: 'application/json'
+				},
+				400: {
+					description: 'Enter a valid id (or) Incorrect Password'
+				},
+				401: {
+					description: 'Access Denied'
+				},
+				404: {
+					description: 'No records found'
+				},
+				500: {
+					description: 'Internal Server error'
+				}
+			},
+			parameters: [
+				{
+					in: 'header',
+					name: 'Authorization',
+					description: 'Token for authorization',
+					required: true,
+					type: 'string'
+				},
+				{
+					in: 'body',
+					name: 'body',
+					description: 'Details needed to update an admin',
+					required: true,
+					schema: {
+						...updateAdminPasswordSwagger,
+						example: updateAdminPasswordExample
+					}
+				},
+				{
+					in: 'path',
+					name: 'id',
+					description: 'ID of the admin needed to update their details',
 					required: true
 				}
 			]

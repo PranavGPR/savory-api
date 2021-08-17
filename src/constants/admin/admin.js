@@ -10,5 +10,11 @@ export const createAdminExample = {
 };
 
 export const updateAdminExample = {
-	name: 'Pranav'
+	name: 'Pranav',
+	email: 'pranav@email.com'
+};
+
+export const updateAdminPasswordExample = {
+	currentPassword: '12345678',
+	newPassword: 'Pranav@23'
 };

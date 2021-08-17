@@ -83,23 +83,17 @@ export const deleteAdmin = async (req, res) => {
 
 /**
  * Update an admin
- * @param {id, name, password, email}
+ * @param {id, name}
  * @returns 'Admin Updated' | 'No records found'
  */
 
 export const updateAdmin = async (req, res) => {
 	const { id } = req.params;
-	const { body } = req;
+	const {
+		body: { name }
+	} = req;
 
-	let fields = '';
-	Object.keys(body).forEach((val, ind) => {
-		fields += ind + 1 === Object.keys(body).length ? `${val}=?` : `${val}=?,`;
-	});
-
-	let objValues = Object.values(body);
-	objValues.push(id);
-
-	const result = await query(`update admins set ${fields} where id=?`, objValues);
+	const result = await query(`update admins set name=? where id=?`, [name, id]);
 
 	if (result.affectedRows) return sendSuccess(res, { message: 'Successfully updated' });
 

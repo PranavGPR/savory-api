@@ -46,7 +46,7 @@ export default {
 			description: 'Create other admins after logging in as an admin',
 			responses: {
 				200: {
-					description: `You're logged in`,
+					description: `Admin created`,
 					content: 'application/json'
 				},
 				400: {

@@ -19,7 +19,7 @@
 	],
 	"author": "PranavGPR",
 	"license": "ISC",
-	"description": "REST API repo for Savory",
+	"description": "The Node.js REST API for Savory - A food ordering app",
 	"dependencies": {
 		"bcrypt": "^5.0.1",
 		"core-js": "^3.14.0",

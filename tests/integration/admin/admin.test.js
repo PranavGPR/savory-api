@@ -240,6 +240,83 @@ describe('/admin/', () => {
 		});
 	});
 
+	describe('PUT /password/:id', () => {
+		let token;
+		let payload;
+
+		beforeEach(async () => {
+			id = uuidv4();
+			token = generateBearerToken('admin');
+			await query('insert into admins(id,name,password,email) values(?,?,?,?)', [
+				id,
+				'Pranav',
+				'$2a$10$q8ApZjzE/yNAGIg4.9WIBuUyLTC/qWO67kErTmiVBb2fEF/lVvNF2',
+				'pranav@email.com'
+			]);
+		});
+
+		afterEach(async () => {
+			await query('delete from admins');
+		});
+
+		const exec = () => {
+			return request(server).put(`/admin/password/${id}`).set('Authorization', token).send(payload);
+		};
+
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
+
+		it('should return 400 if id is not valid', async () => {
+			id = 'test';
+
+			const res = await exec();
+
+			expect(res.status).toBe(400);
+			expect(res.body).toHaveProperty('error', 'Enter a valid id');
+		});
+
+		it('should return 404 if admin does not exists', async () => {
+			id = '77e39eec-a0a4-4efc-a971-bf0a8427aa88';
+			payload = {
+				currentPassword: 'Pranav@23',
+				newPassword: '12345678'
+			};
+
+			const res = await exec();
+
+			expect(res.status).toBe(404);
+			expect(res.body).toHaveProperty('error', 'No records found');
+		});
+
+		it('should return 400 if password is wrong', async () => {
+			payload = {
+				currentPassword: '12345678',
+				newPassword: 'Pranav@23'
+			};
+
+			const res = await exec();
+
+			expect(res.status).toBe(400);
+			expect(res.body).toHaveProperty('error', 'Incorrect Password');
+		});
+
+		it('should return 200 if admin is updated', async () => {
+			payload = {
+				currentPassword: 'Pranav@23',
+				newPassword: '12345678'
+			};
+
+			const res = await exec();
+
+			expect(res.status).toBe(200);
+			expect(res.body).toHaveProperty('message', 'Successfully updated');
+		});
+	});
+
 	describe('DELETE /:id', () => {
 		let token;
 		id = uuidv4();

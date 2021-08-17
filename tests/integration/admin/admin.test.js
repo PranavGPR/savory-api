@@ -336,4 +336,47 @@ describe('/admin/', () => {
 			expect(res.status).toBe(200);
 		});
 	});
+
+	describe('GET /count', () => {
+		let token;
+
+		beforeEach(() => {
+			token = generateBearerToken('admin');
+		});
+
+		const exec = () => {
+			return request(server).get('/admin/count').set('Authorization', token);
+		};
+
+		it('should return 401 if unauthorized', async () => {
+			token = '';
+			const res = await exec();
+
+			expect(res.status).toBe(401);
+		});
+
+		it('should return 200 if admins are found', async () => {
+			id = uuidv4();
+			await query('insert into admins(id,name,password,email) values(?,?,?,?)', [
+				id,
+				'Pranav',
+				'12345678910',
+				'pranavg@email.com'
+			]);
+
+			const res = await exec();
+
+			expect(res.status).toBe(200);
+			expect(res.body).toHaveProperty('result');
+			expect(typeof res.body.result).toBe('number');
+		});
+
+		it('should return 404 if no records found', async () => {
+			await query('delete from admins');
+			const res = await exec();
+
+			expect(res.status).toBe(404);
+			expect(res.body).toHaveProperty('error', 'No records found');
+		});
+	});
 });

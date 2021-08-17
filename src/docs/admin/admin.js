@@ -113,6 +113,40 @@ export default {
 			]
 		}
 	},
+	'/admin/count': {
+		get: {
+			tags: ['Admin'],
+			summary: 'Get admins count',
+			description: 'After logging in, get admins count',
+			responses: {
+				200: {
+					description: 'Count of the admins',
+					content: 'application/json'
+				},
+				400: {
+					description: 'Enter a valid id'
+				},
+				401: {
+					description: 'Access Denied'
+				},
+				404: {
+					description: 'No records found'
+				},
+				500: {
+					description: 'Internal Server error'
+				}
+			},
+			parameters: [
+				{
+					in: 'header',
+					name: 'Authorization',
+					description: 'Token for authorization',
+					required: true,
+					type: 'string'
+				}
+			]
+		}
+	},
 	'/admin/{id}': {
 		get: {
 			tags: ['Admin'],

@@ -86,7 +86,7 @@ export default {
 			description: 'After logging in, get all admins',
 			responses: {
 				200: {
-					description: 'Details of the orders',
+					description: 'Details of the admins',
 					content: 'application/json'
 				},
 				400: {

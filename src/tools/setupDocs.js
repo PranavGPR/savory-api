@@ -13,8 +13,7 @@ const documentObject = {
 		version,
 		contact: {
 			name: 'Pranav',
-			email: 'pranavgpr232000@gmail.com',
-			url: 'https://realgpr.tech'
+			url: 'https://github.com/PranavGPR/savory-api'
 		}
 	},
 	paths: docs

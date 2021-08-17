@@ -88,7 +88,7 @@ export default {
 			description: 'After logging in, get customers count',
 			responses: {
 				200: {
-					description: 'Details of the customers',
+					description: 'Count of the customers',
 					content: 'application/json'
 				},
 				400: {

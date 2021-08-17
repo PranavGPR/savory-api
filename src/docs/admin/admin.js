@@ -233,7 +233,7 @@ export default {
 				{
 					in: 'path',
 					name: 'id',
-					description: 'ID of the admin needed to update their details',
+					description: 'ID of the admin needed to delete that admin',
 					required: true
 				}
 			]

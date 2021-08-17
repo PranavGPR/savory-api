@@ -163,6 +163,44 @@ export default {
 					required: true
 				}
 			]
+		},
+		delete: {
+			tags: ['Admin/Customer'],
+			summary: 'Delete a customer',
+			description: 'Delete customers by id',
+			responses: {
+				200: {
+					description: 'Customer deleted',
+					content: 'application/json'
+				},
+				400: {
+					description: 'Enter a valid id'
+				},
+				401: {
+					description: 'Access Denied'
+				},
+				404: {
+					description: 'No records found'
+				},
+				500: {
+					description: 'Internal Server error'
+				}
+			},
+			parameters: [
+				{
+					in: 'header',
+					name: 'Authorization',
+					description: 'Token for authorization',
+					required: true,
+					type: 'string'
+				},
+				{
+					in: 'path',
+					name: 'id',
+					description: 'ID of the customer needed to delete that customer',
+					required: true
+				}
+			]
 		}
 	}
 };

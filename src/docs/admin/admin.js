@@ -158,7 +158,7 @@ export default {
 			description: 'After logging in, update the details of an admin',
 			responses: {
 				200: {
-					description: 'Details of the orders',
+					description: 'Successfully updated',
 					content: 'application/json'
 				},
 				400: {

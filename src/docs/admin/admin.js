@@ -161,6 +161,44 @@ export default {
 					required: true
 				}
 			]
+		},
+		delete: {
+			tags: ['Admin'],
+			summary: 'Delete an admin',
+			description: 'Delete other admin by id',
+			responses: {
+				200: {
+					description: 'Admin deleted',
+					content: 'application/json'
+				},
+				400: {
+					description: 'Enter a valid id'
+				},
+				401: {
+					description: 'Access Denied'
+				},
+				404: {
+					description: 'No records found'
+				},
+				500: {
+					description: 'Internal Server error'
+				}
+			},
+			parameters: [
+				{
+					in: 'header',
+					name: 'Authorization',
+					description: 'Token for authorization',
+					required: true,
+					type: 'string'
+				},
+				{
+					in: 'path',
+					name: 'id',
+					description: 'ID of the admin needed to update their details',
+					required: true
+				}
+			]
 		}
 	}
 };

@@ -26,4 +26,4 @@ npm run dev
 
 ### 3. Documentation of Routes
 
-Navigate to [Docs](http://localhost:4000/docs) for reading the documentation of each routes.
+Navigate to [Docs](https://savory-api.herokuapp.com/) for reading the documentation of each routes.

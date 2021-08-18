@@ -1,5 +1,5 @@
 export default {
-	'/': {
+	'/ping': {
 		get: {
 			tags: ['Ping'],
 			summary: 'Ping the server',

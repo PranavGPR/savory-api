@@ -1,4 +1,5 @@
 import mysql from 'mysql2/promise';
+import 'regenerator-runtime/runtime';
 import 'dotenv/config';
 
 const { DB_USER, DB_PASS, DB_URL, DB_NAME, TEST_DB_NAME, NODE_ENV } = process.env;

@@ -24,5 +24,5 @@ const documentObject = {
  * @param {*} app
  */
 export default function setupDocs(app) {
-	app.use('/docs', swaggerUI.serve, swaggerUI.setup(documentObject));
+	app.use('/', swaggerUI.serve, swaggerUI.setup(documentObject));
 }

@@ -1,7 +1,7 @@
 {
 	"name": "savory-api",
 	"version": "1.0.0",
-	"main": "src/server.js",
+	"main": "build/server.js",
 	"module": "src/server.js",
 	"scripts": {
 		"build": "babel src --out-dir build",

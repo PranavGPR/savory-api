@@ -37,7 +37,9 @@
 		"regenerator-runtime": "^0.13.7",
 		"swagger-ui-express": "^4.1.6",
 		"uuid": "^8.3.2",
-		"winston": "^3.3.3"
+		"winston": "^3.3.3",
+		"chalk": "^2.4.2",
+		"morgan": "^1.10.0"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.14.3",
@@ -48,10 +50,8 @@
 		"@types/supertest": "^2.0.11",
 		"@types/uuid": "^8.3.0",
 		"babel-plugin-module-resolver": "^4.1.0",
-		"chalk": "^2.4.2",
 		"eslint": "^7.27.0",
 		"jest": "^27.0.4",
-		"morgan": "^1.10.0",
 		"nodemon": "^2.0.7",
 		"prettier": "^2.3.0",
 		"supertest": "^6.1.3"

@@ -6,6 +6,12 @@ import { query } from 'helpers/dbConnection';
 import { generateToken, sendFailure, sendSuccess } from 'helpers';
 
 /**
+ * Controllers for all /customer routes
+ *
+ * Available controllers: createOrder, getAllOrders, getOrderDetails, updateCustomer, getCustomer, customerLogin
+ */
+
+/**
  * Create a order
  * @param {id, customerid, restaurantid, status, delivered_on, ordered_item, amount, payment_mode}
  * @returns 'Successfully created an order' | 'Invalid details'

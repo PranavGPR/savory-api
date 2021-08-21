@@ -17,6 +17,11 @@ registerPreprocessor(app);
 registerRouters(app);
 setupDocs(app);
 
+/**
+ * Starts up the server at the given PORT
+ * @param {Number} PORT
+ */
+
 const server = app.listen(PORT);
 
 server.once('listening', () => {

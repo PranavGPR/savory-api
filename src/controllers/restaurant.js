@@ -5,6 +5,12 @@ import { query } from 'helpers/dbConnection';
 import { generateToken, sendFailure, sendSuccess } from 'helpers';
 
 /**
+ * Controllers for all /customer routes
+ *
+ * Available controllers: completedOrders, OnProgressOrders, newOrders, getRestaurantOrders, getRestaurant, restaurantLogin
+ */
+
+/**
  * Completed Orders of a restaurant
  * @param {id}
  * @returns [orders] | 'No records found'

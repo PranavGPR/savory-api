@@ -2,7 +2,11 @@
 
 The Node.js API Repo for Savory - A food ordering API.
 
-### 1. Install
+### 1. Documentation of Routes
+
+Navigate to [Docs](https://savory-api.herokuapp.com/) for reading the documentation of each routes.
+
+### 2. Install
 
 Clone this repository to your local machine and install the dependencies using your package manager.
 
@@ -16,7 +20,7 @@ or
 yarn install
 ```
 
-### 2. Run the Dev Server
+### 3. Run the Dev Server
 
 Use the command below to spin off the development server:
 
@@ -24,6 +28,8 @@ Use the command below to spin off the development server:
 npm run dev
 ```
 
-### 3. Documentation of Routes
+or
 
-Navigate to [Docs](https://savory-api.herokuapp.com/) for reading the documentation of each routes.
+```shell
+yarn dev
+```

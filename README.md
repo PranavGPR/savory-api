@@ -1,6 +1,6 @@
 ## Savory API
 
-The Node.js API Repo for Savory - A food ordering app.
+The REST API Repo for Savory - A food ordering app.
 
 ### 1. Documentation of Routes
 

@@ -42,6 +42,7 @@
 		"morgan": "^1.10.0"
 	},
 	"devDependencies": {
+		"set-value": ">=4.0.1",
 		"@babel/cli": "^7.14.3",
 		"@babel/core": "^7.14.3",
 		"@babel/node": "^7.14.2",

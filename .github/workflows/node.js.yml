@@ -18,6 +18,7 @@ jobs:
       TEST_DB_USER: ${{secrets.TEST_DB_USER}}
       TEST_DB_PASS: ${{secrets.TEST_DB_PASS}}
       TEST_DB_URL: ${{secrets.TEST_DB_URL}}
+      jwtPrivateKey: ${{secrets.jwtPrivateKey}}
 
     strategy:
       matrix:

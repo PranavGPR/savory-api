@@ -42,6 +42,7 @@
 		"winston": "^3.3.3"
 	},
 	"devDependencies": {
+		"set-value": ">=4.0.1",
 		"@babel/cli": "^7.14.3",
 		"@babel/core": "^7.14.3",
 		"@babel/node": "^7.14.2",
@@ -54,6 +55,8 @@
 		"jest": "^27.0.4",
 		"nodemon": "^2.0.7",
 		"prettier": "^2.3.0",
-		"supertest": "^6.1.3"
+		"supertest": "^6.1.3",
+		"ansi-regex": ">=5.0.1",
+		"swagger-ui-dist": ">=4.1.3"
 	}
 }

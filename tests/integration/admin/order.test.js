@@ -1,9 +1,11 @@
-import request from 'supertest';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
+import request from 'supertest';
+import { v4 as uuidv4 } from 'uuid';
+
+import { customerValues, restaurantValues } from '../constants';
 import { generateBearerToken } from '../functions';
 
 let server;
@@ -26,6 +28,8 @@ describe('/order/', () => {
 
 		afterEach(async () => {
 			await query('delete from orders');
+			await query('delete from restaurants');
+			await query('delete from customers');
 		});
 
 		const exec = () => {
@@ -50,22 +54,26 @@ describe('/order/', () => {
 			id = uuidv4();
 
 			await query(
+				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info, password) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				Object.values(restaurantValues)
+			);
+
+			await query(
+				'insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)',
+				Object.values(customerValues)
+			);
+
+			await query(
 				'insert into orders(id, customerid, restaurantid, status, delivered_on, ordered_item, amount, payment_mode) values(?,?,?,?,?,?,?,?)',
 				[
 					id,
 					'9629ea6a-2854-4f5c-8501-a67e343837dd',
-					'064aecbc-2704-4fa2-b493-b946841ea29c',
+					'ecd6fdb7-2174-4b8c-9f36-cfc7982d866d',
 					'delivered',
 					'2021-06-15 08:00:00',
 					JSON.stringify([
-						{
-							name: 'Idly',
-							quantity: '4'
-						},
-						{
-							name: 'Dosa',
-							quantity: '2'
-						}
+						{ name: 'Idly', quantity: '4' },
+						{ name: 'Dosa', quantity: '2' }
 					]),
 					'200',
 					'COD'
@@ -81,13 +89,24 @@ describe('/order/', () => {
 	describe('GET /:id', () => {
 		let token;
 
-		beforeEach(() => {
+		beforeEach(async () => {
 			id = 'test';
 			token = generateBearerToken('admin');
+			await query(
+				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info, password) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				Object.values(restaurantValues)
+			);
+
+			await query(
+				'insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)',
+				Object.values(customerValues)
+			);
 		});
 
 		afterEach(async () => {
 			await query('delete from orders');
+			await query('delete from restaurants');
+			await query('delete from customers');
 		});
 
 		const exec = () => {
@@ -124,18 +143,12 @@ describe('/order/', () => {
 				[
 					id,
 					'9629ea6a-2854-4f5c-8501-a67e343837dd',
-					'064aecbc-2704-4fa2-b493-b946841ea29c',
+					'ecd6fdb7-2174-4b8c-9f36-cfc7982d866d',
 					'delivered',
 					'2021-06-15 08:00:00',
 					JSON.stringify([
-						{
-							name: 'Idly',
-							quantity: '4'
-						},
-						{
-							name: 'Dosa',
-							quantity: '2'
-						}
+						{ name: 'Idly', quantity: '4' },
+						{ name: 'Dosa', quantity: '2' }
 					]),
 					'200',
 					'COD'
@@ -151,28 +164,30 @@ describe('/order/', () => {
 	describe('PUT /:id', () => {
 		let token;
 		id = uuidv4();
-		let payload = {
-			status: 'delivering'
-		};
+		let payload = { status: 'delivering' };
 
 		beforeEach(async () => {
+			await query(
+				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info, password) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				Object.values(restaurantValues)
+			);
+
+			await query(
+				'insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)',
+				Object.values(customerValues)
+			);
+
 			await query(
 				'insert into orders(id, customerid, restaurantid, status, delivered_on, ordered_item, amount, payment_mode) values(?,?,?,?,?,?,?,?)',
 				[
 					id,
 					'9629ea6a-2854-4f5c-8501-a67e343837dd',
-					'064aecbc-2704-4fa2-b493-b946841ea29c',
+					'ecd6fdb7-2174-4b8c-9f36-cfc7982d866d',
 					'delivered',
 					'2021-06-15 08:00:00',
 					JSON.stringify([
-						{
-							name: 'Idly',
-							quantity: '4'
-						},
-						{
-							name: 'Dosa',
-							quantity: '2'
-						}
+						{ name: 'Idly', quantity: '4' },
+						{ name: 'Dosa', quantity: '2' }
 					]),
 					'200',
 					'COD'
@@ -183,6 +198,8 @@ describe('/order/', () => {
 
 		afterEach(async () => {
 			await query('delete from orders');
+			await query('delete from restaurants');
+			await query('delete from customers');
 		});
 
 		const exec = () => {
@@ -237,22 +254,26 @@ describe('/order/', () => {
 
 		beforeEach(async () => {
 			await query(
+				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info, password) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				Object.values(restaurantValues)
+			);
+
+			await query(
+				'insert into customers(id,name,phoneNumber,email,password) values(?,?,?,?,?)',
+				Object.values(customerValues)
+			);
+
+			await query(
 				'insert into orders(id, customerid, restaurantid, status, delivered_on, ordered_item, amount, payment_mode) values(?,?,?,?,?,?,?,?)',
 				[
 					id,
 					'9629ea6a-2854-4f5c-8501-a67e343837dd',
-					'064aecbc-2704-4fa2-b493-b946841ea29c',
+					'ecd6fdb7-2174-4b8c-9f36-cfc7982d866d',
 					'delivered',
 					'2021-06-15 08:00:00',
 					JSON.stringify([
-						{
-							name: 'Idly',
-							quantity: '4'
-						},
-						{
-							name: 'Dosa',
-							quantity: '2'
-						}
+						{ name: 'Idly', quantity: '4' },
+						{ name: 'Dosa', quantity: '2' }
 					]),
 					'200',
 					'COD'
@@ -263,6 +284,8 @@ describe('/order/', () => {
 
 		afterEach(async () => {
 			await query('delete from orders');
+			await query('delete from restaurants');
+			await query('delete from customers');
 		});
 
 		const exec = () => {

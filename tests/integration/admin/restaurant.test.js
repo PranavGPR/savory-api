@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
 import { generateBearerToken } from '../functions';
+import { restaurantValues } from '../constants';
 
 let server;
 let id;
@@ -50,23 +51,8 @@ describe('/restaurant/', () => {
 			id = uuidv4();
 
 			await query(
-				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-				[
-					id,
-					'77e39eec-a0a4-4efc-a971-bf0a8427aa88',
-					'Restaurant',
-					'9750844040',
-					'restaurant1@email.com',
-					'4/1252, Street',
-					'Madurai',
-					'625020',
-					JSON.stringify(['Chinese', 'North Indian', 'South Indian']),
-					'08:00:00',
-					'20:00:00',
-					JSON.stringify(['Tikka Gravy', 'Paneer Masala']),
-					JSON.stringify(['Good service']),
-					JSON.stringify(['Valet Parking'])
-				]
+				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info, password) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				Object.values(restaurantValues)
 			);
 
 			const res = await exec();
@@ -114,26 +100,11 @@ describe('/restaurant/', () => {
 		});
 
 		it('should return 200 if restaurant exists', async () => {
-			id = uuidv4();
+			id = 'ecd6fdb7-2174-4b8c-9f36-cfc7982d866d';
 
 			await query(
-				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-				[
-					id,
-					'77e39eec-a0a4-4efc-a971-bf0a8427aa88',
-					'Restaurant',
-					'9750844040',
-					'restaurant1@email.com',
-					'4/1252, Street',
-					'Madurai',
-					'625020',
-					JSON.stringify(['Chinese', 'North Indian', 'South Indian']),
-					'08:00:00',
-					'20:00:00',
-					JSON.stringify(['Tikka Gravy', 'Paneer Masala']),
-					JSON.stringify(['Good service']),
-					JSON.stringify(['Valet Parking'])
-				]
+				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info, password) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				Object.values(restaurantValues)
 			);
 
 			const res = await exec();
@@ -151,23 +122,8 @@ describe('/restaurant/', () => {
 
 		beforeEach(async () => {
 			await query(
-				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-				[
-					id,
-					'77e39eec-a0a4-4efc-a971-bf0a8427aa88',
-					'Restaurant',
-					'9750844040',
-					'restaurant1@email.com',
-					'4/1252, Street',
-					'Madurai',
-					'625020',
-					JSON.stringify(['Chinese', 'North Indian', 'South Indian']),
-					'08:00:00',
-					'20:00:00',
-					JSON.stringify(['Tikka Gravy', 'Paneer Masala']),
-					JSON.stringify(['Good service']),
-					JSON.stringify(['Valet Parking'])
-				]
+				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info, password) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				Object.values(restaurantValues)
 			);
 
 			token = generateBearerToken('admin');
@@ -210,6 +166,7 @@ describe('/restaurant/', () => {
 		});
 
 		it('should return 200 if one field is updated', async () => {
+			id = 'ecd6fdb7-2174-4b8c-9f36-cfc7982d866d';
 			payload.name = 'GPR';
 			const res = await exec();
 
@@ -235,23 +192,8 @@ describe('/restaurant/', () => {
 
 		beforeEach(async () => {
 			await query(
-				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-				[
-					id,
-					'77e39eec-a0a4-4efc-a971-bf0a8427aa88',
-					'Restaurant',
-					'9750844040',
-					'restaurant1@email.com',
-					'4/1252, Street',
-					'Madurai',
-					'625020',
-					JSON.stringify(['Chinese', 'North Indian', 'South Indian']),
-					'08:00:00',
-					'20:00:00',
-					JSON.stringify(['Tikka Gravy', 'Paneer Masala']),
-					JSON.stringify(['Good service']),
-					JSON.stringify(['Valet Parking'])
-				]
+				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info, password) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				Object.values(restaurantValues)
 			);
 			token = generateBearerToken('admin');
 		});
@@ -290,6 +232,7 @@ describe('/restaurant/', () => {
 		});
 
 		it('should return 200 if restaurant is deleted', async () => {
+			id = 'ecd6fdb7-2174-4b8c-9f36-cfc7982d866d';
 			const res = await exec();
 
 			expect(res.status).toBe(200);
@@ -309,7 +252,8 @@ describe('/restaurant/', () => {
 			closing_time: '20:00:00',
 			popular_dishes: JSON.stringify(['Tikka Gravy', 'Paneer Masala']),
 			people_say: JSON.stringify(['Good service']),
-			more_info: JSON.stringify(['Valet Parking'])
+			more_info: JSON.stringify(['Valet Parking']),
+			password: '$2b$10$vTkWCMemROvuX639knNLvONS92BAOLaIx76W9GspYkrNISyztqLDy'
 		};
 
 		beforeEach(() => {
@@ -369,25 +313,9 @@ describe('/restaurant/', () => {
 		});
 
 		it('should return 200 if restaurants are found', async () => {
-			id = uuidv4();
 			await query(
-				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-				[
-					id,
-					'77e39eec-a0a4-4efc-a971-bf0a8427aa88',
-					'Restaurant',
-					'9750844040',
-					'restaurant1@email.com',
-					'4/1252, Street',
-					'Madurai',
-					'625020',
-					JSON.stringify(['Chinese', 'North Indian', 'South Indian']),
-					'08:00:00',
-					'20:00:00',
-					JSON.stringify(['Tikka Gravy', 'Paneer Masala']),
-					JSON.stringify(['Good service']),
-					JSON.stringify(['Valet Parking'])
-				]
+				'insert into restaurants(id,menuid,name,phoneNumber,email,address,city,pincode,cuisines,opening_time,closing_time,popular_dishes,people_say,more_info, password) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				Object.values(restaurantValues)
 			);
 
 			const res = await exec();

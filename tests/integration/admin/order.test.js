@@ -1,11 +1,12 @@
-import request from 'supertest';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
-import { generateBearerToken } from '../functions';
+import request from 'supertest';
+import { v4 as uuidv4 } from 'uuid';
+
 import { customerValues, restaurantValues } from '../constants';
+import { generateBearerToken } from '../functions';
 
 let server;
 let id;
@@ -71,14 +72,8 @@ describe('/order/', () => {
 					'delivered',
 					'2021-06-15 08:00:00',
 					JSON.stringify([
-						{
-							name: 'Idly',
-							quantity: '4'
-						},
-						{
-							name: 'Dosa',
-							quantity: '2'
-						}
+						{ name: 'Idly', quantity: '4' },
+						{ name: 'Dosa', quantity: '2' }
 					]),
 					'200',
 					'COD'
@@ -152,14 +147,8 @@ describe('/order/', () => {
 					'delivered',
 					'2021-06-15 08:00:00',
 					JSON.stringify([
-						{
-							name: 'Idly',
-							quantity: '4'
-						},
-						{
-							name: 'Dosa',
-							quantity: '2'
-						}
+						{ name: 'Idly', quantity: '4' },
+						{ name: 'Dosa', quantity: '2' }
 					]),
 					'200',
 					'COD'
@@ -175,9 +164,7 @@ describe('/order/', () => {
 	describe('PUT /:id', () => {
 		let token;
 		id = uuidv4();
-		let payload = {
-			status: 'delivering'
-		};
+		let payload = { status: 'delivering' };
 
 		beforeEach(async () => {
 			await query(
@@ -199,14 +186,8 @@ describe('/order/', () => {
 					'delivered',
 					'2021-06-15 08:00:00',
 					JSON.stringify([
-						{
-							name: 'Idly',
-							quantity: '4'
-						},
-						{
-							name: 'Dosa',
-							quantity: '2'
-						}
+						{ name: 'Idly', quantity: '4' },
+						{ name: 'Dosa', quantity: '2' }
 					]),
 					'200',
 					'COD'
@@ -291,14 +272,8 @@ describe('/order/', () => {
 					'delivered',
 					'2021-06-15 08:00:00',
 					JSON.stringify([
-						{
-							name: 'Idly',
-							quantity: '4'
-						},
-						{
-							name: 'Dosa',
-							quantity: '2'
-						}
+						{ name: 'Idly', quantity: '4' },
+						{ name: 'Dosa', quantity: '2' }
 					]),
 					'200',
 					'COD'

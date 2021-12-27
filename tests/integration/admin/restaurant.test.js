@@ -1,11 +1,12 @@
-import request from 'supertest';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import { v4 as uuidv4 } from 'uuid';
 
 import { query } from 'helpers/dbConnection';
-import { generateBearerToken } from '../functions';
+import request from 'supertest';
+import { v4 as uuidv4 } from 'uuid';
+
 import { restaurantValues } from '../constants';
+import { generateBearerToken } from '../functions';
 
 let server;
 let id;
@@ -116,9 +117,7 @@ describe('/restaurant/', () => {
 	describe('PUT /:id', () => {
 		let token;
 		id = uuidv4();
-		let payload = {
-			name: 'Pranav'
-		};
+		let payload = { name: 'Pranav' };
 
 		beforeEach(async () => {
 			await query(

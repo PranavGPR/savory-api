@@ -47,10 +47,6 @@
 	},
 	"devDependencies": {
 		"set-value": ">=4.0.1",
-		"@babel/cli": "^7.14.3",
-		"@babel/core": "^7.14.3",
-		"@babel/node": "^7.14.2",
-		"@babel/preset-env": "^7.14.4",
 		"@types/jest": "^26.0.23",
 		"@types/supertest": "^2.0.11",
 		"@types/uuid": "^8.3.0",

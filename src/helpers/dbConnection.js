@@ -23,7 +23,7 @@ export const query = async (sql, params) => {
 			user: TEST_DB_USER,
 			password: TEST_DB_PASS,
 			database: TEST_DB_NAME,
-			ssl: {}
+			ssl: { rejectUnauthorized: false }
 		});
 	} else {
 		connection = await mysql.createConnection({
@@ -31,7 +31,7 @@ export const query = async (sql, params) => {
 			user: DB_USER,
 			password: DB_PASS,
 			database: DB_NAME,
-			ssl: {}
+			ssl: { rejectUnauthorized: false }
 		});
 	}
 

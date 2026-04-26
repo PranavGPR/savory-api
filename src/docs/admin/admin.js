@@ -72,8 +72,8 @@ export default {
 			},
 			parameters: [
 				{
-					in: 'path',
-					name: 'token',
+					in: 'header',
+					name: 'Authorization',
 					description: 'Token for Authorization',
 					required: true
 				},

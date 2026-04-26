@@ -39,14 +39,15 @@
 		"regenerator-runtime": "^0.13.7",
 		"swagger-ui-express": "^4.1.6",
 		"uuid": "^8.3.2",
-		"winston": "^3.3.3"
-	},
-	"devDependencies": {
-		"set-value": ">=4.0.1",
+		"winston": "^3.3.3",
+		"babel-plugin-module-resolver": "^4.1.0",
 		"@babel/cli": "^7.14.3",
 		"@babel/core": "^7.14.3",
 		"@babel/node": "^7.14.2",
-		"@babel/preset-env": "^7.14.4",
+		"@babel/preset-env": "^7.14.4"
+	},
+	"devDependencies": {
+		"set-value": ">=4.0.1",
 		"@types/jest": "^26.0.23",
 		"@types/supertest": "^2.0.11",
 		"@types/uuid": "^8.3.0",

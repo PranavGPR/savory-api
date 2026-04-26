@@ -31,7 +31,9 @@ export const query = async (sql, params) => {
 			user: DB_USER,
 			password: DB_PASS,
 			database: DB_NAME,
-			ssl: {}
+			ssl: {
+				rejectUnauthorized: true
+			}
 		});
 	}
 
